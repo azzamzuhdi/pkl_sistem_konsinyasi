@@ -154,8 +154,10 @@ ORDER BY sk.tanggal DESC;
                                                         <tbody>
                                                             <?php
                                                             $no = 1;
+                                                            $grand_total = 0;
                                                             if (mysqli_num_rows($query_rusak) > 0) {
                                                                 while ($row = mysqli_fetch_assoc($query_rusak)) {
+                                                                    $grand_total += $row['total'];
                                                                     ?>
                                                                     <tr>
                                                                         <td><?= $no++ ?></td>
@@ -174,6 +176,11 @@ ORDER BY sk.tanggal DESC;
                                                             }
                                                             ?>
                                                         </tbody>
+                                                        <tfoot></tfoot>
+                                                            <tr>
+                                                                <th colspan="6" class="text-right">Total Kerugian</th>
+                                                                <th>Rp. <?= number_format($grand_total, 0, ',', '.') ?></th>
+                                                            </tr>
                                                     </table>
                                                 </div>
                                             </div>

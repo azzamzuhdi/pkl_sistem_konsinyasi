@@ -159,8 +159,14 @@ ORDER BY sk.tanggal DESC;
                                                         <tbody>
                                                             <?php
                                                             $no = 1;
+                                                            $total_penjualan = 0;
+                                                            $hak_supplier = 0;
+                                                            $keuntungan_toko = 0;
                                                             if (mysqli_num_rows($query_bagi) > 0) {
                                                                 while ($row = mysqli_fetch_assoc($query_bagi)) {
+                                                                    $total_penjualan += $row['total_penjualan'];
+                                                                    $hak_supplier += $row['hak_supplier'];
+                                                                    $keuntungan_toko += $row['keuntungan_toko'];
                                                                     ?>
                                                                     <tr>
                                                                         <td><?= $no++ ?></td>
@@ -178,8 +184,16 @@ ORDER BY sk.tanggal DESC;
                                                             } else {
                                                                 echo "<tr><td colspan='9'>Tidak ada barang untuk supplier ini</td></tr>";
                                                             }
+                                                            
                                                             ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th colspan="6" class="text-right">Total</th>
+                                                                <th>Rp. <?= number_format($total_penjualan, 0, ',', '.') ?></th>
+                                                                <th>Rp. <?= number_format($hak_supplier, 0, ',', '.') ?></th>
+                                                                <th>Rp. <?= number_format($keuntungan_toko, 0, ',', '.') ?></th>
+                                                            </tr>
                                                     </table>
                                                 </div>
                                             </div>

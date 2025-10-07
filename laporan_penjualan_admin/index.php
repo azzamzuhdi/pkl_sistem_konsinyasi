@@ -138,7 +138,7 @@ ORDER BY sk.tanggal DESC;
                                         <?php if ($id_supplier) { ?>
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <table class="table table-bordered table-striped text-center">
+                                                    <table id="example1" class="table table-bordered table-striped text-center">
                                                         <thead>
                                                             <tr>
                                                                 <th>No</th>
@@ -153,8 +153,10 @@ ORDER BY sk.tanggal DESC;
                                                         <tbody>
                                                             <?php
                                                             $no = 1;
+                                                            $grand_total = 0;
                                                             if (mysqli_num_rows($query_terjual) > 0) {
                                                                 while ($row = mysqli_fetch_assoc($query_terjual)) {
+                                                                    $grand_total += $row['total'];
                                                                     ?>
                                                                     <tr>
                                                                         <td><?= $no++ ?></td>
@@ -162,7 +164,8 @@ ORDER BY sk.tanggal DESC;
                                                                         <td><?= $row['kode_barang'] ?></td>
                                                                         <td><?= $row['nama_barang'] ?></td>
                                                                         <td><?= $row['jumlah'] ?> pcs</td>
-                                                                        <td>Rp. <?= number_format($row['harga_jual'], 0, ',', '.') ?></td>
+                                                                        <td>Rp. <?= number_format($row['harga_jual'], 0, ',', '.') ?>
+                                                                        </td>
                                                                         <td>Rp. <?= number_format($row['total'], 0, ',', '.') ?></td>
                                                                     </tr>
                                                                     <?php
@@ -172,6 +175,14 @@ ORDER BY sk.tanggal DESC;
                                                             }
                                                             ?>
                                                         </tbody>
+
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th colspan="6" class="text-right">Total Penjualan</th>
+                                                                <th>Rp. <?= number_format($grand_total, 0, ',', '.') ?></th>
+                                                            </tr>
+                                                        </tfoot>
+
                                                     </table>
                                                 </div>
                                             </div>
