@@ -1,6 +1,6 @@
 <?php
 require_once '../db/conn.php';
-$halaman = 'laporan_penjualan_admin';
+$halaman = 'laporan_penjualan_supplier';
 $id_supplier = $_SESSION['id_supplier'];
 if ($_SESSION['peran'] != '1') {
     session_destroy();
