@@ -135,6 +135,21 @@ if ($_SESSION['peran'] == '0') { ?>
             </p>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a href="../data_barang_supplier" class="nav-link 
+    <?php
+    if ($halaman == 'data_barang_supplier') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class=" nav-icon fas fa-box"></i>
+            <p>
+                Barang Saya
+            </p>
+        </a>
+    </li>
     <?php
 }
 ?>
