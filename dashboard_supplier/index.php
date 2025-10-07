@@ -48,8 +48,10 @@ if ($_SESSION['peran'] != '1') {
                 <div class="content">
                     <div class="container-fluid">
                         <div class="row">
+
+                            <!-- Total Barang Masuk -->
                             <div class="col-lg-3 col-6">
-                                <div class="small-box bg-info">
+                                <div class="small-box bg-success">
                                     <div class="inner">
                                         <?php
                                         $id_supplier = $_SESSION['id_supplier'];
@@ -60,66 +62,67 @@ if ($_SESSION['peran'] != '1') {
                                         <p>Total Barang Masuk</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-bag"></i>
+                                        <i class="fas fa-boxes"></i>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Barang Terjual -->
                             <div class="col-lg-3 col-6">
-                                <div class="small-box bg-info">
+                                <div class="small-box bg-primary">
                                     <div class="inner">
                                         <?php
-                                        $id_supplier = $_SESSION['id_supplier'];
-                                        $query_terjual = mysqli_query($conn, "SELECT SUM(jumlah) AS total_terjual, jenis_keluar FROM tb_stok_keluar WHERE id_supplier = '$id_supplier' AND jenis_keluar = 'Terjual'") or die(mysqli_error($conn));
+                                        $query_terjual = mysqli_query($conn, "SELECT SUM(jumlah) AS total_terjual FROM tb_stok_keluar WHERE id_supplier = '$id_supplier' AND jenis_keluar = 'Terjual'") or die(mysqli_error($conn));
                                         $total_terjual = mysqli_fetch_assoc($query_terjual)['total_terjual'] ?? 0;
                                         ?>
                                         <h3><?= $total_terjual; ?></h3>
                                         <p>Barang Terjual</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-bag"></i>
+                                        <i class="fas fa-shopping-cart"></i>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Barang Rusak -->
                             <div class="col-lg-3 col-6">
-                                <div class="small-box bg-info">
+                                <div class="small-box bg-danger">
                                     <div class="inner">
                                         <?php
-                                        $id_supplier = $_SESSION['id_supplier'];
-                                        $query_rusak = mysqli_query($conn, "SELECT SUM(jumlah) AS total_rusak, jenis_keluar FROM tb_stok_keluar WHERE id_supplier = '$id_supplier' AND jenis_keluar = 'Rusak'") or die(mysqli_error($conn));
+                                        $query_rusak = mysqli_query($conn, "SELECT SUM(jumlah) AS total_rusak FROM tb_stok_keluar WHERE id_supplier = '$id_supplier' AND jenis_keluar = 'Rusak'") or die(mysqli_error($conn));
                                         $total_rusak = mysqli_fetch_assoc($query_rusak)['total_rusak'] ?? 0;
                                         ?>
                                         <h3><?= $total_rusak; ?></h3>
                                         <p>Barang Rusak</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-bag"></i>
+                                        <i class="fas fa-times-circle"></i>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Barang Kadaluarsa -->
                             <div class="col-lg-3 col-6">
-                                <div class="small-box bg-info">
+                                <div class="small-box bg-warning">
                                     <div class="inner">
                                         <?php
-                                        $id_supplier = $_SESSION['id_supplier'];
-                                        $query_kadaluarsa = mysqli_query($conn, "SELECT SUM(jumlah) AS total_kadaluarsa, jenis_keluar FROM tb_stok_keluar WHERE id_supplier = '$id_supplier' AND jenis_keluar = 'Kadaluarsa'") or die(mysqli_error($conn));
+                                        $query_kadaluarsa = mysqli_query($conn, "SELECT SUM(jumlah) AS total_kadaluarsa FROM tb_stok_keluar WHERE id_supplier = '$id_supplier' AND jenis_keluar = 'Kadaluarsa'") or die(mysqli_error($conn));
                                         $total_kadaluarsa = mysqli_fetch_assoc($query_kadaluarsa)['total_kadaluarsa'] ?? 0;
                                         ?>
                                         <h3><?= $total_kadaluarsa; ?></h3>
                                         <p>Barang Kadaluarsa</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-bag"></i>
+                                        <i class="fas fa-exclamation-triangle"></i>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Sisa Stok -->
                             <div class="col-lg-3 col-6">
-                                <div class="small-box bg-info">
+                                <div class="small-box bg-secondary">
                                     <div class="inner">
                                         <?php
-                                        $id_supplier = $_SESSION['id_supplier'];
                                         $query_sisa = mysqli_query($conn, "SELECT SUM(sisa_stok) AS jml_sisa_stok FROM tb_barang WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
                                         $jml_sisa_stok = mysqli_fetch_assoc($query_sisa)['jml_sisa_stok'] ?? 0;
                                         ?>
@@ -127,40 +130,36 @@ if ($_SESSION['peran'] != '1') {
                                         <p>Stok Sisa</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-bag"></i>
+                                        <i class="fas fa-warehouse"></i>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Total Pendapatan -->
                             <div class="col-lg-3 col-6">
                                 <div class="small-box bg-info">
                                     <div class="inner">
                                         <?php
-                                        $id_supplier = $_SESSION['id_supplier'];
-                                        $query_pendapatan = mysqli_query($conn, "SELECT 
-    s.id_supplier,
-    b.harga_konsinyasi,
-    b.harga_jual,
-    sk.jumlah,
-    sk.jenis_keluar,
-    (sk.jumlah * b.harga_konsinyasi) AS total_pendapatan
-FROM tb_stok_keluar sk
-JOIN tb_barang b 
-JOIN tb_supplier s ON b.id_supplier = s.id_supplier
-WHERE sk.jenis_keluar = 'Terjual' AND s.id_supplier = '$id_supplier'
-    ") or die(mysqli_error($conn));
+                                        $query_pendapatan = mysqli_query($conn, "
+                    SELECT SUM(sk.jumlah * b.harga_konsinyasi) AS total_pendapatan
+                    FROM tb_stok_keluar sk
+                    JOIN tb_barang b ON sk.id_barang = b.id_barang
+                    WHERE sk.jenis_keluar = 'Terjual' AND b.id_supplier = '$id_supplier'
+                ") or die(mysqli_error($conn));
+
                                         $pendapatan = mysqli_fetch_assoc($query_pendapatan)['total_pendapatan'] ?? 0;
                                         ?>
-                                        <h3><?= $pendapatan; ?></h3>
+                                        <h3>Rp. <?= number_format($pendapatan, 0, ',', '.') ?></h3>
                                         <p>Total Pendapatan</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="ion ion-bag"></i>
+                                        <i class="fas fa-money-bill-wave"></i>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
+
                     </div>
                 </div>
             </div>
