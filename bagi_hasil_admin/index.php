@@ -226,18 +226,7 @@ ORDER BY sk.tanggal DESC;
             <?php
             include '../layout/script.php';
             ?>
-            <script>
-                $('#modal-stok').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);
-                    var id_barang = button.data('id_barang');
-                    var nama_barang = button.data('nama_barang');
-                    var id_supplier = button.data('id_supplier');
-
-                    $('#id_barang_modal').val(id_barang);
-                    $('#nama_barang_modal').val(nama_barang);
-                    $('#id_supplier_modal').val(id_supplier);
-                });
-            </script>
+           
     </body>
 
     </html>

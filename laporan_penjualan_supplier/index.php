@@ -69,6 +69,7 @@ if ($_SESSION['peran'] != '1') {
     b.harga_jual,
     sk.jumlah,
     sk.jenis_keluar,
+    sk.status_pembayaran,
     (sk.jumlah * b.harga_jual) AS total
 FROM tb_stok_keluar sk
 JOIN tb_barang b ON sk.id_barang = b.id_barang
@@ -87,6 +88,7 @@ ORDER BY sk.tanggal DESC;
                                                         <th>Kode Barang</th>
                                                         <th>Nama Barang</th>
                                                         <th>Jumlah Terjual</th>
+                                                        <th>Status</th>
                                                         <th>Harga per Pcs</th>
                                                         <th>Total</th>
                                                     </tr>
@@ -105,6 +107,13 @@ ORDER BY sk.tanggal DESC;
                                                                 <td><?= $row['kode_barang'] ?></td>
                                                                 <td><?= $row['nama_barang'] ?></td>
                                                                 <td><?= $row['jumlah'] ?> pcs</td>
+                                                                <td>
+                                                                    <?php if ($row['status_pembayaran'] == 'Sudah Dibayar') { ?>
+                                                                        <span class="badge bg-success">Sudah Dibayar</span>
+                                                                    <?php } else { ?>
+                                                                        <span class="badge bg-danger">Belum Dibayar</span>
+                                                                    <?php } ?>
+                                                                </td>
                                                                 <td>Rp. <?= number_format($row['harga_jual'], 0, ',', '.') ?>
                                                                 </td>
                                                                 <td>Rp. <?= number_format($row['total'], 0, ',', '.') ?></td>
@@ -119,7 +128,7 @@ ORDER BY sk.tanggal DESC;
 
                                                 <tfoot>
                                                     <tr>
-                                                        <th colspan="6" class="text-right">Total Penjualan</th>
+                                                        <th colspan="7" class="text-right">Total Penjualan</th>
                                                         <th>Rp. <?= number_format($grand_total, 0, ',', '.') ?></th>
                                                     </tr>
                                                 </tfoot>

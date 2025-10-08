@@ -220,7 +220,7 @@ $halaman = 'data_barang_supplier';
                                 <label for="harga_konsinyasi"> Harga Konsinyasi:
                                 </label>
                                 <input type="number" name="harga_konsinyasi2" class="form-control"
-                                    id="harga_konsinyasi2">
+                                    id="harga_konsinyasi2" >
                             </div>
                             <div class="form-group">
                                 <label for="harga_jual"> Harga Jual:
