@@ -175,7 +175,7 @@ ORDER BY sk.tanggal DESC;
                                                                             </button>
 
                                                                         <?php } else { ?>
-                                                                            <button class="btn btn-sm btn-secondary" disabled>✔</button>
+                                                                            <button class="btn btn-sm btn-success" disabled>Lunas</button>
                                                                         <?php } ?>
                                                                     </td>
                                                                 </tr>
@@ -217,8 +217,11 @@ ORDER BY sk.tanggal DESC;
 
                                 <div class="mb-3">
                                     <label>Total Pembayaran</label>
-                                    <input type="text" name="total_pembayaran" id="total_pembayaran" class="form-control"
-                                        readonly>
+                                    <input type="text" name="total_pembayaran_tampil" id="total_pembayaran"
+                                        class="form-control" readonly>
+
+                                    <!-- nilai mentah untuk disimpan ke database -->
+                                    <input type="hidden" name="total_pembayaran" id="total_pembayaran_hidden">
                                 </div>
 
                                 <div class="mb-3">
@@ -260,6 +263,13 @@ ORDER BY sk.tanggal DESC;
                 var urlParams = new URLSearchParams(window.location.search);
                 var id_supplier = urlParams.get('id_supplier');
 
+                // Format total menjadi Rupiah
+                var totalFormatted = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(total);
+
                 // Debugging — biar tahu nilainya benar atau tidak
                 console.log("ID Supplier dari URL:", id_supplier);
                 console.log("ID Keluar:", id_keluar);
@@ -267,7 +277,8 @@ ORDER BY sk.tanggal DESC;
                 // Isi ke input dalam modal
                 $(this).find('#id_keluar').val(id_keluar);
                 $(this).find('#id_supplier').val(id_supplier);
-                $(this).find('#total_pembayaran').val(total);
+                $(this).find('#total_pembayaran').val(totalFormatted);
+                $(this).find('#total_pembayaran_hidden').val(total);
             });
         });
     </script>
