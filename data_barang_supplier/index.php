@@ -2,6 +2,7 @@
 require_once '../db/conn.php';
 $id_supplier = $_SESSION['id_supplier'];
 $halaman = 'data_barang_supplier';
+$query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplier = '$id_supplier' ORDER BY id_pengajuan DESC") or die(mysqli_error($conn));
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +11,7 @@ $halaman = 'data_barang_supplier';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard 2</title>
+    <title>Data Barang | Sistem Konsinyasi</title>
 
     <?php
     include '../layout/style.php';
@@ -52,9 +53,10 @@ $halaman = 'data_barang_supplier';
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <button type="button" class="btn btn-info btn-md" data-toggle="modal"
-                                        data-target="#modal-tambah-barang" data-id_supplier="<?= $id_supplier ?>"><i
-                                            class="fas fa-plus"></i> Tambah
-                                        Barang</button>
+    data-target="#modal-tambah-pengajuan" data-id_supplier="<?= $id_supplier ?>">
+    <i class="fas fa-plus"></i> Ajukan Barang Baru
+</button>
+
                                        
                                     <p></p>
                                     <table id="example1"
@@ -68,6 +70,7 @@ $halaman = 'data_barang_supplier';
                                                 <th>Harga Jual</th>
                                                 <th>Stok Masuk</th>
                                                 <th>Sisa Stok</th>
+                                                <th>Status</th>
                                                 <th style="width : 25%">Aksi</th>
                                             </tr>
                                         </thead>
@@ -86,7 +89,24 @@ $halaman = 'data_barang_supplier';
                                                         <td><?= $row['harga_konsinyasi'] ?></td>
                                                         <td><?= $row['harga_jual'] ?></td>
                                                         <td><?= $row['stok_masuk'] ?></td>
-                                                        <td><?= $row['sisa_stok'] ?></td>
+                                                        <td> <?php
+                                                                        if ($row['sisa_stok'] <= 0 ) {
+                                                                            ?>
+                                                                            <span class="badge badge-danger">Habis</span>   
+                                                                            <?php
+                                                                        } else {
+                                                                            ?>
+                                                                             <?= $row['sisa_stok'] ?>
+                                                                            <?php
+                                                                        }
+                                                                        ?></td>
+                                                                          <td>
+    <?php
+    $status = $row['status_pengajuan'] ?? 'Disetujui'; 
+    $badge = $status == 'Menunggu' ? 'badge-warning' : ($status == 'Disetujui' ? 'badge-success' : 'badge-danger');
+    ?>
+    <span class="badge <?= $badge ?>"><?= ucfirst($status) ?></span>
+</td>
                                                         <td>
                                                             <button type="button"
                                                                 class="btn btn-success btn-md open-modal-button"
@@ -100,10 +120,6 @@ $halaman = 'data_barang_supplier';
                                                                 <i class="fas fa-pencil-alt"></i> Edit
                                                             </button>
 
-                                                            <a href="aksi.php?id_barang=<?= $row['id_barang'] ?>"
-                                                                class="btn btn-danger btn-md"
-                                                                onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i
-                                                                    class="fas fa-trash"></i> Hapus</a>
                                                         </td>
                                                         <?php
                                                 }
@@ -134,8 +150,8 @@ $halaman = 'data_barang_supplier';
             <!-- Control sidebar content goes here -->
         </aside>
 
-        <!-- modal tambah -->
-        <div class="modal fade" id="modal-tambah-barang">
+     <!-- Modal Pengajuan Barang -->
+ <div class="modal fade" id="modal-tambah-pengajuan">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -145,7 +161,7 @@ $halaman = 'data_barang_supplier';
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="aksi.php" method="POST">
+                        <form action="pengajuan_barang_proses.php" method="POST">
                             <div class="form-group">
                                 <input type="hidden" name="id_supplier" value="<?= $id_supplier ?>">
                                 <input type="hidden" name="id_barang" id="id_barang">
@@ -167,19 +183,19 @@ $halaman = 'data_barang_supplier';
                                     required>
                             </div>
                             <div class="form-group">
-                                <label for="harga_jual"> Harga Jual:
-                                </label>
-                                <input type="number" name="harga_jual" class="form-control" id="harga_jual" required>
-                            </div>
-                            <div class="form-group">
                                 <label for="stok_masuk"> Stok Masuk:
                                 </label>
                                 <input type="number" name="stok_masuk" class="form-control" id="stok_masuk" required>
                             </div>
+                            <!-- <div class="form-group">
+                                <label for="status_pengajuan"> Status:
+                                </label>
+                                <input type="text" name="status_pengajuan" class="form-control" id="status_pengajuan" readonly value="Menunggu">
+                            </div> -->
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" name="tambah_barang" class="btn btn-primary">Simpan</button>
+                        <button type="submit" name="kirim_pengajuan" class="btn btn-primary">Simpan</button>
                         </form>
                     </div>
                 </div>
@@ -189,6 +205,7 @@ $halaman = 'data_barang_supplier';
 
             <!-- Main Footer -->
         </div>
+
 
         <!-- modal edit -->
         <div class="modal fade" id="modal-edit-barang">
@@ -225,7 +242,7 @@ $halaman = 'data_barang_supplier';
                             <div class="form-group">
                                 <label for="harga_jual"> Harga Jual:
                                 </label>
-                                <input type="number" name="harga_jual2" class="form-control" id="harga_jual2">
+                                <input type="number" name="harga_jual2" class="form-control" id="harga_jual2" readonly>
                             </div>
                     </div>
                     <div class="modal-footer justify-content-between">

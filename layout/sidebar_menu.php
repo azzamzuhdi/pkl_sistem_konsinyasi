@@ -30,6 +30,21 @@ if ($_SESSION['peran'] == '0') { ?>
         </a>
     </li>
 
+    <li class="nav-item">
+        <a href="../pengajuan_barang_admin" class="nav-link 
+    <?php
+    if ($halaman == 'data_supplier_admin') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class=" nav-icon fas fa-paper-plane"></i>
+            <p>
+                Pengajuan Barang
+            </p>
+        </a>
+    </li>
+
     <li class="nav-item has-treeview 
     <?php if ($halaman == 'stok_masuk_admin' || $halaman == 'stok_keluar_admin')
         echo 'menu-open'; ?>">
@@ -147,6 +162,21 @@ if ($_SESSION['peran'] == '0') { ?>
             <i class=" nav-icon fas fa-box"></i>
             <p>
                 Barang Saya
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="../data_barang_supplier/pengajuan_barang_supplier.php" class="nav-link 
+    <?php
+    if ($halaman == 'pengajuan_barang_supplier') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class=" nav-icon fas fa-paper-plane"></i>
+            <p>
+                Pengajuan Barang
             </p>
         </a>
     </li>

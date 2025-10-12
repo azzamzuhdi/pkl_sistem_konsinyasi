@@ -15,7 +15,7 @@ if ($_SESSION['peran'] != '0') {
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Dashboard 2</title>
+        <title>Data Supplier | Sistem Konsinyasi</title>
 
         <?php
         include '../layout/style.php';
@@ -220,14 +220,7 @@ if ($_SESSION['peran'] != '0') {
             <?php
             include '../layout/script.php';
             ?>
-            <script>
-                $(function () {
-                    $("#example1").DataTable({
-                        "responsive": true,
-                        "autoWidth": false,
-                    });
-                });
-            </script>
+           
     </body>
 
     </html>

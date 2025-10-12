@@ -14,7 +14,7 @@ if ($_SESSION['peran'] != '0') {
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Pembayaran Supplier</title>
+        <title>Pembayaran Supplier | Sistem Konsinyasi</title>
         <?php include '../layout/style.php'; ?>
     </head>
 
@@ -231,7 +231,7 @@ ORDER BY sk.tanggal DESC;
 
                                 <div class="mb-3">
                                     <label>Keterangan</label>
-                                    <textarea name="keterangan" class="form-control" placeholder="Opsional"></textarea>
+                                    <textarea name="keterangan" class="form-control" placeholder="Cash / Transfer"></textarea>
                                 </div>
                             </div>
 
