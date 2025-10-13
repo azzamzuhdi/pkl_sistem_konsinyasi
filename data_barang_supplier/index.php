@@ -71,7 +71,7 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                                 <th>Stok Masuk</th>
                                                 <th>Sisa Stok</th>
                                                 <th>Status</th>
-                                                <th style="width : 25%">Aksi</th>
+                                                <th style="width : 10%">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -124,7 +124,7 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                                         <?php
                                                 }
                                             } else {
-                                                echo "<tr><td colspan='8'>Tidak ada data</td></tr>";
+                                                echo "<tr><td colspan='9'>Tidak ada data</td></tr>";
                                             }
                                             ?>
                                             </tr>

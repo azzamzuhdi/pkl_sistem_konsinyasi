@@ -107,7 +107,7 @@ $id_supplier = $_GET['id_supplier'];
                                                         <?php
                                                 }
                                             } else {
-                                                echo "<tr><td colspan='8'>Tidak ada data</td></tr>";
+                                                echo "<tr><td colspan='9'>Tidak ada data</td></tr>";
                                             }
                                             ?>
                                             </tr>

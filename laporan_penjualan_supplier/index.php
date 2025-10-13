@@ -66,11 +66,11 @@ if ($_SESSION['peran'] != '1') {
     sk.id_barang,
     b.nama_barang,
     b.kode_barang,
-    b.harga_jual,
+    b.harga_konsinyasi,
     sk.jumlah,
     sk.jenis_keluar,
     sk.status_pembayaran,
-    (sk.jumlah * b.harga_jual) AS total
+    (sk.jumlah * b.harga_konsinyasi) AS total
 FROM tb_stok_keluar sk
 JOIN tb_barang b ON sk.id_barang = b.id_barang
 JOIN tb_supplier s ON b.id_supplier = s.id_supplier
@@ -114,7 +114,7 @@ ORDER BY sk.tanggal DESC;
                                                                         <span class="badge bg-danger">Belum Dibayar</span>
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td>Rp. <?= number_format($row['harga_jual'], 0, ',', '.') ?>
+                                                                <td>Rp. <?= number_format($row['harga_konsinyasi'], 0, ',', '.') ?>
                                                                 </td>
                                                                 <td>Rp. <?= number_format($row['total'], 0, ',', '.') ?></td>
                                                             </tr>

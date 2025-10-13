@@ -1,4 +1,5 @@
 <?php
+require_once '../db/conn.php';
 if ($_SESSION['peran'] == '0') { ?>
     <li class="nav-item">
         <a href="../dashboard_admin" class="nav-link 
@@ -30,20 +31,40 @@ if ($_SESSION['peran'] == '0') { ?>
         </a>
     </li>
 
-    <li class="nav-item">
-        <a href="../pengajuan_barang_admin" class="nav-link 
     <?php
-    if ($halaman == 'data_supplier_admin') {
-        echo 'active';
+    $query_count = mysqli_query($conn, "SELECT COUNT(*) AS jumlah FROM tb_pengajuan_barang WHERE status_pengajuan='Menunggu'");
+    $data_count = mysqli_fetch_assoc($query_count);
+    ?>
+    <?php
+    if ($data_count['jumlah'] > 0) { ?>
+        <li class="nav-item">
+            <a href="../pengajuan_barang_admin" class="nav-link 
+    <?php if ($halaman == 'pengajuan_barang_admin')
+                echo 'active'; ?>">
+                <i class="nav-icon fas fa-paper-plane"></i>
+                <p>
+                    Pengajuan Barang
+                    <span class="badge badge-primary">
+                        <?= $data_count['jumlah']; ?>
+                    </span>
+                </p>
+            </a>
+        </li> <?php
+    } else { ?>
+        <li class="nav-item">
+            <a href="../pengajuan_barang_admin" class="nav-link 
+    <?php if ($halaman == 'pengajuan_barang_admin')
+                echo 'active'; ?>">
+                <i class="nav-icon fas fa-paper-plane"></i>
+                <p>
+                    Pengajuan Barang
+                </p>
+            </a>
+        </li> <?php
     }
-    ?>">
+    ?>
 
-            <i class=" nav-icon fas fa-paper-plane"></i>
-            <p>
-                Pengajuan Barang
-            </p>
-        </a>
-    </li>
+
 
     <li class="nav-item has-treeview 
     <?php if ($halaman == 'stok_masuk_admin' || $halaman == 'stok_keluar_admin')

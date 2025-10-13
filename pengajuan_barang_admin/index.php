@@ -1,6 +1,6 @@
 <?php
 require_once '../db/conn.php';
-$halaman = 'stok_keluar_admin';
+$halaman = 'pengajuan_barang_admin';
 if ($_SESSION['peran'] != '0') {
     session_destroy();
     header('location:../auth');
@@ -85,14 +85,20 @@ if ($_SESSION['peran'] != '0') {
                                             // Aksi
                                             echo "<td class='text-center'>";
                                             if ($row['status_pengajuan'] == 'Menunggu') {
-                                                echo "
-        <a href='pengajuan_tanggapi.php?id={$row['id_pengajuan']}&aksi=terima' class='btn btn-success btn-sm' title='Terima'>
-            <i class='fas fa-check'></i>
-        </a>
-        <a href='pengajuan_tanggapi.php?id={$row['id_pengajuan']}&aksi=tolak' class='btn btn-danger btn-sm' title='Tolak'>
-            <i class='fas fa-times'></i>
-        </a>
-    ";
+                                                ?>
+                                                <button type="button" class="btn btn-success btn-sm" title="Setujui"
+                                                    onclick="bukaModalHarga('<?= $row['id_pengajuan'] ?>', '<?= htmlspecialchars($row['nama_barang']) ?>')">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+
+                                                <a href="pengajuan_tanggapi.php"
+                                                    onclick="return tolakPengajuan(<?= $row['id_pengajuan'] ?>)"
+                                                    class="btn btn-danger btn-sm" title="Tolak">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+
+
+                                                <?php
                                             } else {
                                                 echo "<span class='text-muted'>—</span>"; // tampilkan strip
                                             }
@@ -103,6 +109,39 @@ if ($_SESSION['peran'] != '0') {
                                         ?>
                                     </tbody>
                                 </table>
+                                <!-- Modal Input Harga Jual -->
+                                <div class="modal fade" id="modalHarga" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form id="formHarga" action="pengajuan_tanggapi.php" method="POST">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-success text-white">
+                                                    <h5 class="modal-title">Tentukan Harga Jual</h5>
+                                                    <button type="button" class="close text-white"
+                                                        data-dismiss="modal">&times;</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="id" id="id_pengajuan">
+                                                    <input type="hidden" name="aksi" value="terima">
+                                                    <div class="form-group">
+                                                        <label>Nama Barang</label>
+                                                        <input type="text" id="nama_barang" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Harga Jual</label>
+                                                        <input type="number" name="harga_jual" id="harga_jual"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Simpan & Setujui</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -116,6 +155,8 @@ if ($_SESSION['peran'] != '0') {
             </aside>
 
 
+
+
             <!-- ./wrapper -->
 
             <?php
@@ -125,6 +166,18 @@ if ($_SESSION['peran'] != '0') {
             <?php
             include '../layout/script.php';
             ?>
+            <script>
+                function bukaModalHarga(id, namaBarang) {
+                    // Isi data ke form
+                    document.getElementById('id_pengajuan').value = id;
+                    document.getElementById('nama_barang').value = namaBarang;
+                    document.getElementById('harga_jual').value = '';
+
+                    // Tampilkan modal
+                    $('#modalHarga').modal('show');
+                }
+            </script>
+
     </body>
 
     </html>
