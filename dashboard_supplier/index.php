@@ -158,6 +158,54 @@ if ($_SESSION['peran'] != '1') {
                                 </div>
                             </div>
 
+                            <!-- Sudah Dibayar -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <?php
+                                        $query_lunas = mysqli_query($conn, "
+                    SELECT SUM(sk.jumlah * b.harga_konsinyasi) AS total_lunas
+                    FROM tb_stok_keluar sk
+                    JOIN tb_barang b ON sk.id_barang = b.id_barang
+                    WHERE sk.status_pembayaran = 'Sudah Dibayar' AND b.id_supplier = '$id_supplier'
+                ") or die(mysqli_error($conn));
+
+                                        $lunas = mysqli_fetch_assoc($query_lunas)['total_lunas'] ?? 0;
+                                        ?>
+                                        <h3>Rp <?= number_format($lunas, 0, ',', '.'); ?></h3>
+                                        <p>Total Lunas</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Belum  Dibayar -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <?php
+                                        $query_blm_lunas = mysqli_query($conn, "
+                    SELECT SUM(sk.jumlah * b.harga_konsinyasi) AS total_belum_lunas
+                    FROM tb_stok_keluar sk
+                    JOIN tb_barang b ON sk.id_barang = b.id_barang
+                    WHERE sk.status_pembayaran = 'Belum Dibayar' AND b.id_supplier = '$id_supplier'
+                ") or die(mysqli_error($conn));
+
+                                        $blm_lunas = mysqli_fetch_assoc($query_blm_lunas)['total_belum_lunas'] ?? 0;
+                                        ?>
+                                        <h3>Rp <?= number_format($blm_lunas, 0, ',', '.'); ?></h3>
+                                        <p>Belum Dibayar</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                         </div>
 
                     </div>

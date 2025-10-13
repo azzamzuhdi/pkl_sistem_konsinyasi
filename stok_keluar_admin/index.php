@@ -261,6 +261,7 @@ if ($_SESSION['peran'] != '0') {
                                     <textarea name="keterangan" id="keterangan" class="form-control" rows="2"
                                         placeholder="Contoh: kemasan bocor / expired 09-2025" required></textarea>
                                 </div>
+                                 <input type="hidden" name="status_pembayaran">
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
