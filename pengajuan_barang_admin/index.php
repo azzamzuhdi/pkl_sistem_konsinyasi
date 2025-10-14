@@ -15,7 +15,7 @@ if ($_SESSION['peran'] != '0') {
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Stok Keluar | Sistem Konsinyasi</title>
+        <title>Pengajuan  Barang | Sistem Konsinyasi</title>
 
         <?php
         include '../layout/style.php';
@@ -34,17 +34,16 @@ if ($_SESSION['peran'] != '0') {
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <section class="content-header">
-                    <h1 class="text-center">Daftar Pengajuan Barang Supplier</h1>
+                    <h1>Daftar Pengajuan Barang Supplier</h1>
                 </section>
 
                 <section class="content">
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-header bg-primary text-white">
-                                <h3 class="card-title">Data Pengajuan Barang</h3>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered table-striped">
+                                <table id="example1" class="table table-bordered table-striped">
                                     <thead class="bg-light">
                                         <tr>
                                             <th>No</th>

@@ -1,6 +1,8 @@
 <?php
 require_once '../db/conn.php';
 if ($_SESSION['peran'] == '0') { ?>
+
+<!-- Admin -->
     <li class="nav-item">
         <a href="../dashboard_admin" class="nav-link 
     <?php
@@ -64,7 +66,20 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>
 
+    <li class="nav-item">
+        <a href="../data_retur_admin" class="nav-link 
+    <?php
+    if ($halaman == 'data_retur_admin') {
+        echo 'active';
+    }
+    ?>">
 
+            <i class=" nav-icon fas fa-undo"></i>
+            <p>
+                Retur Barang
+            </p>
+        </a>
+    </li>
 
     <li class="nav-item has-treeview 
     <?php if ($halaman == 'stok_masuk_admin' || $halaman == 'stok_keluar_admin')
@@ -157,6 +172,8 @@ if ($_SESSION['peran'] == '0') { ?>
     </li>
     <?php
 } else { ?>
+
+<!-- Supplier -->
     <li class="nav-item">
         <a href="../dashboard_supplier" class="nav-link 
     <?php
@@ -198,6 +215,21 @@ if ($_SESSION['peran'] == '0') { ?>
             <i class=" nav-icon fas fa-paper-plane"></i>
             <p>
                 Pengajuan Barang
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="../data_retur_supplier" class="nav-link 
+    <?php
+    if ($halaman == 'data_retur_supplier') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class=" nav-icon fas fa-undo"></i>
+            <p>
+                Retur Barang
             </p>
         </a>
     </li>
