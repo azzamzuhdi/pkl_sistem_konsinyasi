@@ -199,7 +199,7 @@ if ($_SESSION['peran'] != '1') {
                                         <p>Belum Dibayar</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-check-circle"></i>
+                                        <i class="fas fa-times"></i>
                                     </div>
                                 </div>
                             </div>
