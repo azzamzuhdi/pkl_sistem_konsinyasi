@@ -14,7 +14,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
-                <a href="../auth/logout.php" class="dropdown-item">
+                <a href="../auth/logout.php" class="dropdown-item" onclick="return confirm('Yakin ingin keluar?')"  >
                     <i class="fas fa-sign-out-alt mr-2"></i> Keluar
                 </a>
             </div>

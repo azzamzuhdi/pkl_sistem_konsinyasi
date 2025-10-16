@@ -70,7 +70,6 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                                 <th>Harga Jual</th>
                                                 <th>Stok Masuk</th>
                                                 <th>Sisa Stok</th>
-                                                <th>Status</th>
                                                 <th style="width : 10%">Aksi</th>
                                             </tr>
                                         </thead>
@@ -100,13 +99,6 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                                                             <?php
                                                                         }
                                                                         ?></td>
-                                                                          <td>
-    <?php
-    $status = $row['status_pengajuan'] ?? 'Disetujui'; 
-    $badge = $status == 'Menunggu' ? 'badge-warning' : ($status == 'Disetujui' ? 'badge-success' : 'badge-danger');
-    ?>
-    <span class="badge <?= $badge ?>"><?= ucfirst($status) ?></span>
-</td>
                                                         <td>
                                                             <button type="button"
                                                                 class="btn btn-success btn-md open-modal-button"

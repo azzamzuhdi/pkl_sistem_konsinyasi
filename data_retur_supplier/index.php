@@ -43,8 +43,6 @@ if ($_SESSION['peran'] != '1') {
                             <h3 class="card-title">Daftar Barang Rusak / Kadaluarsa</h3>
                         </div>
                         <div class="card-body">
-                            <a href="riwayat_retur.php" class="btn btn-primary"><i class="fas fa-history"></i>Riwayat
-                                Retur</a>
                             <p></p>
                             <?php
                             $id_supplier = $_SESSION['id_supplier'];

@@ -249,6 +249,21 @@ if ($_SESSION['peran'] == '0') { ?>
         </a>
     </li>
 
+    <li class="nav-item">
+        <a href="../laporan_retur_supplier" class="nav-link 
+    <?php
+    if ($halaman == 'laporan_retur_supplier') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class=" nav-icon fas fa-book"></i>
+            <p>
+                Laporan Retur
+            </p>
+        </a>
+    </li>
+
 
     <?php
 }
