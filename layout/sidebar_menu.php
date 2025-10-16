@@ -11,7 +11,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-home"></i>
+            <i class="nav-icon fas fa-home"></i>
             <p>
                 Beranda
             </p>
@@ -26,7 +26,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-dolly"></i>
+            <i class="nav-icon fas fa-store"></i>
             <p>
                 Supplier
             </p>
@@ -74,7 +74,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-undo"></i>
+            <i class="nav-icon fas fa-undo"></i>
             <p>
                 Retur Barang
             </p>
@@ -115,7 +115,7 @@ if ($_SESSION['peran'] == '0') { ?>
     <?php if ($halaman == 'laporan_rusak_admin' || $halaman == 'laporan_penjualan_admin')
         echo 'menu-open'; ?>">
         <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-book"></i>
+            <i class="nav-icon fas fa-file-alt"></i>
             <p>
                 Laporan
                 <i class="right fas fa-angle-left"></i>
@@ -149,7 +149,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-handshake"></i>
+            <i class="nav-icon fas fa-handshake"></i>
             <p>
                 Bagi Hasil
             </p>
@@ -164,7 +164,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-money-bill"></i>
+            <i class="nav-icon fas fa-wallet"></i>
             <p>
                 Pembayaran Supplier
             </p>
@@ -182,7 +182,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-home"></i>
+            <i class="nav-icon fas fa-home"></i>
             <p>
                 Beranda
             </p>
@@ -197,7 +197,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-box"></i>
+            <i class="nav-icon fas fa-box"></i>
             <p>
                 Barang Saya
             </p>
@@ -212,7 +212,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-paper-plane"></i>
+            <i class="nav-icon fas fa-paper-plane"></i>
             <p>
                 Pengajuan Barang
             </p>
@@ -227,7 +227,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-undo"></i>
+            <i class="nav-icon fas fa-undo"></i>
             <p>
                 Retur Barang
             </p>
@@ -242,7 +242,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-book"></i>
+            <i class="nav-icon fas fa-chart-line"></i>
             <p>
                 Laporan Penjualan
             </p>
@@ -257,7 +257,7 @@ if ($_SESSION['peran'] == '0') { ?>
     }
     ?>">
 
-            <i class=" nav-icon fas fa-book"></i>
+            <i class="nav-icon fas fa-file-alt"></i>
             <p>
                 Laporan Retur
             </p>
