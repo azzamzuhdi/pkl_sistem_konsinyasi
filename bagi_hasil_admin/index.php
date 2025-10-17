@@ -142,6 +142,12 @@ ORDER BY sk.tanggal DESC;
                                         <?php if ($id_supplier) { ?>
                                             <div class="card">
                                                 <div class="card-body">
+                                                    <p>
+                                                        <a href="export_pdf.php?id_supplier=<?= $id_supplier ?>"
+                                                            target="_blank" class="btn btn-primary">
+                                                            <i class="fas fa-file-pdf"></i> Export PDF
+                                                        </a>
+                                                    </p>
                                                     <table id="example1" class="table table-bordered table-striped text-center">
                                                         <thead>
                                                             <tr>
