@@ -175,7 +175,9 @@ ORDER BY sk.tanggal DESC;
                                                                             </button>
 
                                                                         <?php } else { ?>
-                                                                            <button class="btn btn-sm btn-success" disabled>Lunas</button>
+                                                                            <a href="cetak_invoice.php?id_keluar=<?= $row['id_keluar'] ?>" target="_blank" class="btn btn-sm btn-info">
+                                                                                <i class="fas fa-print"></i> Cetak Invoice
+                                                                            </a>
                                                                         <?php } ?>
                                                                     </td>
                                                                 </tr>
