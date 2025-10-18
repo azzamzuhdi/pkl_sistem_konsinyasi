@@ -170,6 +170,20 @@ if ($_SESSION['peran'] == '0') { ?>
             </p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="../pembayaran_admin" class="nav-link 
+    <?php
+    if ($halaman == 'pembayaran_admin') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class="nav-icon fas fa-bell"></i>
+            <p>
+                Notifikasi Pembayaran
+            </p>
+        </a>
+    </li>
     <?php
 } else { ?>
 
@@ -260,6 +274,36 @@ if ($_SESSION['peran'] == '0') { ?>
             <i class="nav-icon fas fa-file-alt"></i>
             <p>
                 Laporan Retur
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="../pembayaran_supplier" class="nav-link 
+    <?php
+    if ($halaman == 'pembayaran_supplier') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class="nav-icon fas fa-wallet"></i>
+            <p>
+                Pembayaran Saya
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="../pembayaran_supplier" class="nav-link 
+    <?php
+    if ($halaman == 'pembayaran_supplier') {
+        echo 'active';
+    }
+    ?>">
+
+            <i class="nav-icon fas fa-file-alt"></i>
+            <p>
+                Pembayaran Saya
             </p>
         </a>
     </li>

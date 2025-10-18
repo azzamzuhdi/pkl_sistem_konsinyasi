@@ -6,6 +6,7 @@ require_once '../db/conn.php';
 if (isset($_POST['tambah'])) {
     $nama_supplier = $_POST['nama_supplier'];
     $no_hp = $_POST['no_hp'];
+    $email = isset($_POST['email']) ? $_POST['email'] : '';
     $alamat = $_POST['alamat'];
     $peran = '1';
     $nama_user = $nama_supplier;
@@ -17,7 +18,13 @@ if (isset($_POST['tambah'])) {
     if ($rv > 0) {
         echo "<script>alert('Supplier sudah ada !!');window.location='index.php';</script>";
     } else {
-        mysqli_query($conn, "INSERT INTO tb_supplier (nama_supplier, no_hp, alamat) VALUES ('$nama_supplier', '$no_hp', '$alamat')") or die(mysqli_error($conn));
+        // pastikan kolom email ada
+        $col_check = mysqli_query($conn, "SHOW COLUMNS FROM tb_supplier LIKE 'email'");
+        if (mysqli_num_rows($col_check) == 0) {
+            mysqli_query($conn, "ALTER TABLE tb_supplier ADD COLUMN email VARCHAR(255) NULL") or die(mysqli_error($conn));
+        }
+
+        mysqli_query($conn, "INSERT INTO tb_supplier (nama_supplier, no_hp, alamat, email) VALUES ('$nama_supplier', '$no_hp', '$alamat', '$email')") or die(mysqli_error($conn));
 
         $id_supplier = mysqli_insert_id($conn);
 
@@ -37,8 +44,15 @@ if (isset($_POST['edit'])) {
     $id_supplier = $_POST['id_supplier2'];
     $nama_supplier = $_POST['nama_supplier2'];
     $no_hp = $_POST['no_hp2'];
+    $email = isset($_POST['email2']) ? $_POST['email2'] : '';
     $alamat = $_POST['alamat2'];
-    mysqli_query($conn, "UPDATE tb_supplier SET nama_supplier = '$nama_supplier', no_hp = '$no_hp', alamat = '$alamat' WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
+    // pastikan kolom email ada
+    $col_check = mysqli_query($conn, "SHOW COLUMNS FROM tb_supplier LIKE 'email'");
+    if (mysqli_num_rows($col_check) == 0) {
+        mysqli_query($conn, "ALTER TABLE tb_supplier ADD COLUMN email VARCHAR(255) NULL") or die(mysqli_error($conn));
+    }
+
+    mysqli_query($conn, "UPDATE tb_supplier SET nama_supplier = '$nama_supplier', no_hp = '$no_hp', alamat = '$alamat', email = '$email' WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
     echo "<script>alert('Data supplier berhasil edit');window.location='index.php';</script>";
 }
 

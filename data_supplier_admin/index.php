@@ -67,6 +67,7 @@ if ($_SESSION['peran'] != '0') {
                                                     <th>Nama Supplier</th>
                                                     <th>No Hp</th>
                                                     <th>Alamat</th>
+                                                    <th>Email</th>
                                                     <th style="width : 25%">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -83,14 +84,16 @@ if ($_SESSION['peran'] != '0') {
                                                             <td><?= $row['nama_supplier'] ?></td>
                                                             <td><?= $row['no_hp'] ?></td>
                                                             <td><?= $row['alamat'] ?></td>
+                                                            <td><?= $row['email'] ?></td>
                                                             <td>
                                                                 <button type="button"
                                                                     class="btn btn-success btn-md open-modal-button"
                                                                     data-toggle="modal" data-target="#modal-edit"
                                                                     data-id_supplier="<?= $row['id_supplier'] ?>"
-                                                                    data-nama_supplier="<?= $row['nama_supplier'] ?>"
-                                                                    data-no_hp="<?= $row['no_hp'] ?>"
-                                                                    data-alamat="<?= $row['alamat'] ?>"><i
+                                                                    data-nama_supplier="<?= htmlspecialchars($row['nama_supplier'], ENT_QUOTES) ?>"
+                                                                    data-no_hp="<?= htmlspecialchars($row['no_hp'], ENT_QUOTES) ?>"
+                                                                    data-email="<?= htmlspecialchars($row['email'], ENT_QUOTES) ?>"
+                                                                    data-alamat="<?= htmlspecialchars($row['alamat'], ENT_QUOTES) ?>"><i
                                                                         class="fas fa-pencil-alt"></i> Edit</button>
                                                                 <a href="barang.php?id_supplier=<?= $row['id_supplier'] ?>"
                                                                     class="btn btn-primary btn-md"><i class="fas fa-box"></i>
@@ -153,6 +156,11 @@ if ($_SESSION['peran'] != '0') {
                                     <input type="text" name="no_hp" class="form-control" id="no_hp" maxlength="12">
                                 </div>
                                 <div class="form-group">
+                                    <label for="email"> Email:
+                                    </label>
+                                    <input type="email" name="email" class="form-control" id="email" maxlength="255">
+                                </div>
+                                <div class="form-group">
                                     <label for="alamat"> Alamat:
                                     </label>
                                     <input type="text" name="alamat" class="form-control" id="alamat" maxlength="255">
@@ -196,6 +204,11 @@ if ($_SESSION['peran'] != '0') {
                                     <input type="text" name="no_hp2" class="form-control" id="no_hp2" maxlength="12">
                                 </div>
                                 <div class="form-group">
+                                    <label for="email2"> Email:
+                                    </label>
+                                    <input type="email" name="email2" class="form-control" id="email2" maxlength="255">
+                                </div>
+                                <div class="form-group">
                                     <label for="alamat"> Alamat:
                                     </label>
                                     <input type="text" name="alamat2" class="form-control" id="alamat2" maxlength="255">
@@ -221,6 +234,23 @@ if ($_SESSION['peran'] != '0') {
             include '../layout/script.php';
             ?>
            
+            <script>
+                // Fill edit modal fields from the button's data attributes
+                $(document).on('click', '.open-modal-button', function () {
+                    var btn = $(this);
+                    var id = btn.data('id_supplier');
+                    var nama = btn.data('nama_supplier');
+                    var nohp = btn.data('no_hp');
+                    var email = btn.data('email');
+                    var alamat = btn.data('alamat');
+
+                    $('#id_supplier2').val(id);
+                    $('#nama_supplier2').val(nama);
+                    $('#no_hp2').val(nohp);
+                    $('#email2').val(email);
+                    $('#alamat2').val(alamat);
+                });
+            </script>
     </body>
 
     </html>
