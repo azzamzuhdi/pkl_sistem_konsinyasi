@@ -14,34 +14,30 @@ $id_supplier = $_SESSION['id_supplier'];
 $query_supplier = mysqli_query($conn, "SELECT * FROM tb_supplier WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
 $row_supplier = mysqli_fetch_assoc($query_supplier);
 
-// Query laporan penjualan
+// Query data retur
 $query = mysqli_query($conn, "
     SELECT 
-        sk.id_keluar,
-        s.id_supplier,
-        sk.tanggal,
-        sk.id_barang,
+        r.id_retur,
         b.nama_barang,
-        b.kode_barang,
         b.harga_konsinyasi,
-        sk.jumlah,
-        sk.jenis_keluar,
-        sk.status_pembayaran,
-        (sk.jumlah * b.harga_konsinyasi) AS total
-    FROM tb_stok_keluar sk
-    JOIN tb_barang b ON sk.id_barang = b.id_barang
-    JOIN tb_supplier s ON b.id_supplier = s.id_supplier
-    WHERE sk.jenis_keluar = 'Terjual' 
-    AND s.id_supplier = '$id_supplier'
-    ORDER BY sk.tanggal DESC
+        r.jumlah_retur,
+        r.tanggal_retur,
+        r.alasan,
+        r.keterangan,
+        r.status_retur
+    FROM tb_retur_barang r
+    JOIN tb_barang b ON r.id_barang = b.id_barang
+    WHERE r.id_supplier = '$id_supplier'
+    AND r.status_retur = 'Diterima'
+    ORDER BY r.tanggal_retur DESC
 ") or die(mysqli_error($conn));
 
 class PDF extends FPDF
 {
     function Header()
     {
-        // Logo (posisi x=10, y=6, ukuran lebar 25mm)
-        $this->Image('../logo_toko.png', 10, 8, 25); // ubah path logo sesuai lokasi kamu
+        // Logo toko
+        $this->Image('../logo.png', 10, 8, 25); // ubah path sesuai lokasi logo kamu
 
         // Nama toko dan alamat
         $this->SetFont('Arial', 'B', 16);
@@ -60,20 +56,20 @@ class PDF extends FPDF
         // Judul laporan
         $this->Ln(10);
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(190, 8, 'LAPORAN PENJUALAN BARANG SUPPLIER', 0, 1, 'C');
+        $this->Cell(190, 8, 'LAPORAN RETUR BARANG SUPPLIER', 0, 1, 'C');
         $this->Ln(5);
     }
 
     function Footer()
     {
-        // Posisi footer 15 mm dari bawah
+        // Posisi footer
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 9);
         $this->Cell(0, 10, 'Dicetak pada: ' . date('d-m-Y H:i') . ' | Halaman ' . $this->PageNo(), 0, 0, 'C');
     }
 }
 
-// Buat PDF
+// Inisialisasi PDF
 $pdf = new PDF('P', 'mm', 'A4');
 $pdf->AddPage();
 
@@ -103,38 +99,38 @@ $pdf->Ln(5);
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->SetFillColor(230, 230, 230);
 $pdf->Cell(10, 8, 'No', 1, 0, 'C', true);
-$pdf->Cell(35, 8, 'Kode Barang', 1, 0, 'C', true);
-$pdf->Cell(45, 8, 'Nama Barang', 1, 0, 'C', true);
-$pdf->Cell(20, 8, 'Jumlah', 1, 0, 'C', true);
-$pdf->Cell(25, 8, 'Harga/Pcs', 1, 0, 'C', true);
-$pdf->Cell(25, 8, 'Total', 1, 0, 'C', true);
-$pdf->Cell(30, 8, 'Tanggal', 1, 1, 'C', true);
+$pdf->Cell(50, 8, 'Nama Barang', 1, 0, 'C', true);
+$pdf->Cell(25, 8, 'Jumlah', 1, 0, 'C', true);
+$pdf->Cell(30, 8, 'Harga/Pcs', 1, 0, 'C', true);
+$pdf->Cell(30, 8, 'Tanggal Retur', 1, 0, 'C', true);
+$pdf->Cell(45, 8, 'Alasan Retur', 1, 1, 'C', true);
 
 $pdf->SetFont('Arial', '', 10);
+
 $no = 1;
-$total_semua = 0;
+$total_retur = 0;
 
 // ====================
 // Isi tabel
 // ====================
 if (mysqli_num_rows($query) > 0) {
     while ($row = mysqli_fetch_assoc($query)) {
+        $subtotal = $row['jumlah_retur'] * $row['harga_konsinyasi'];
         $pdf->Cell(10, 7, $no++, 1, 0, 'C');
-        $pdf->Cell(35, 7, $row['kode_barang'], 1, 0, 'C');
-        $pdf->Cell(45, 7, $row['nama_barang'], 1, 0, 'L');
-        $pdf->Cell(20, 7, $row['jumlah'] . ' pcs', 1, 0, 'C');
-        $pdf->Cell(25, 7, 'Rp ' . number_format($row['harga_konsinyasi'], 0, ',', '.'), 1, 0, 'R');
-        $pdf->Cell(25, 7, 'Rp ' . number_format($row['total'], 0, ',', '.'), 1, 0, 'R');
-        $pdf->Cell(30, 7, date('d-m-Y', strtotime($row['tanggal'])), 1, 1, 'C');
-        $total_semua += $row['total'];
+        $pdf->Cell(50, 7, $row['nama_barang'], 1, 0, 'L');
+        $pdf->Cell(25, 7, $row['jumlah_retur'] . ' pcs', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'Rp ' . number_format($row['harga_konsinyasi'], 0, ',', '.'), 1, 0, 'R');
+        $pdf->Cell(30, 7, date('d-m-Y', strtotime($row['tanggal_retur'])), 1, 0, 'C');
+        $pdf->Cell(45, 7, $row['alasan'], 1, 1, 'L');
+        $total_retur += $subtotal;
     }
 
     // Total keseluruhan
     $pdf->SetFont('Arial', 'B', 11);
-    $pdf->Cell(160, 8, 'TOTAL PENJUALAN', 1, 0, 'R', true);
-    $pdf->Cell(30, 8, 'Rp ' . number_format($total_semua, 0, ',', '.'), 1, 1, 'R', true);
+    $pdf->Cell(145, 8, 'Total Nilai Retur Barang', 1, 0, 'R', true);
+    $pdf->Cell(45, 8, 'Rp ' . number_format($total_retur, 0, ',', '.'), 1, 1, 'R', true);
 } else {
-    $pdf->Cell(190, 8, 'Tidak ada data penjualan untuk supplier ini', 1, 1, 'C');
+    $pdf->Cell(190, 8, 'Tidak ada data retur untuk supplier ini', 1, 1, 'C');
 }
 
 $pdf->Ln(10);
@@ -152,5 +148,5 @@ $pdf->Cell(130, 8, '', 0, 0);
 $pdf->Cell(60, 8, '(____________________)', 0, 1, 'C');
 
 // Output PDF
-$pdf->Output('I', 'Laporan_Penjualan_Supplier.pdf');
+$pdf->Output('I', 'Laporan_Retur_Supplier.pdf');
 ?>
