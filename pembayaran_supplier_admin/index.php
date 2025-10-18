@@ -131,14 +131,15 @@ ORDER BY sk.tanggal DESC;
                                                     <table id="example1" class="table table-bordered table-striped text-center">
                                                         <thead>
                                                             <tr>
-                                                                <th>No</th>
-                                                                <th>Tanggal</th>
-                                                                <th>Nama Barang</th>
-                                                                <th>Jumlah</th>
-                                                                <th>Harga Konsinyasi</th>
-                                                                <th>Total Hak Supplier</th>
-                                                                <th>Status Pembayaran</th>
-                                                                <th>Aksi</th>
+                                    <th>No</th>
+                                        <th>Tanggal</th>
+                                        <th>Nama Barang</th>
+                                        <th>Jumlah</th>
+                                        <th>Harga Konsinyasi</th>
+                                        <th>Total Hak Supplier</th>
+                                        <th>Status Pembayaran</th>
+                                        <th>Aksi</th>
+                                        <th>Cetak Bukti Pembayaran</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -166,6 +167,7 @@ ORDER BY sk.tanggal DESC;
                                                                         <?php } ?>
                                                                     </td>
                                                                     <td>
+                                                                        <!-- Aksi: Bayar (jika belum) atau Lunas label -->
                                                                         <?php if ($row['status_pembayaran'] == 'Belum Dibayar') { ?>
                                                                             <button class="btn btn-sm btn-primary" data-toggle="modal"
                                                                                 data-target="#modalBayar"
@@ -173,20 +175,32 @@ ORDER BY sk.tanggal DESC;
                                                                                 data-total="<?= $row['total_hak'] ?>">
                                                                                 Bayar
                                                                             </button>
-
                                                                         <?php } else { ?>
-                                                                            <button class="btn btn-sm btn-success" disabled>Lunas</button>
+                                                                            <span class="badge bg-success">Lunas</span>
                                                                         <?php } ?>
+
+                                                                        <!-- Cetak Bukti/Invoice di kolom terpisah -->
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php if ($row['status_pembayaran'] == 'Sudah Dibayar') { ?>
+                                                                                <a href="cetak_invoice.php?id_keluar=<?= $row['id_keluar'] ?>" target="_blank" class="btn btn-sm btn-primary">
+                                                                                    <i class="fas fa-print"></i> Cetak Bukti Pembayaran
+                                                                                </a>
+                                                                            <?php } else { ?>
+                                                                                <a href="cetak_invoice.php?id_keluar=<?= $row['id_keluar'] ?>" target="_blank" class="btn btn-sm btn-info">
+                                                                                    <i class="fas fa-print"></i> Cetak Invoice
+                                                                                </a>
+                                                                            <?php } ?>
                                                                     </td>
                                                                 </tr>
                                                             <?php } ?>
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="7" class="text-right">Total Hak Supplier</th>
-                                                                <th colspan="1" class="text-right">Rp.
-                                                                    <?= number_format($total_tagihan, 0, ',', '.') ?>
-                                                                </th>
+                                                                    <th colspan="8" class="text-right">Total Hak Supplier</th>
+                                                                    <th colspan="1" class="text-right">Rp.
+                                                                        <?= number_format($total_tagihan, 0, ',', '.') ?>
+                                                                    </th>
                                                             </tr>
                                                         </tfoot>
                                                     </table>
@@ -230,8 +244,12 @@ ORDER BY sk.tanggal DESC;
                                 </div>
 
                                 <div class="mb-3">
-                                    <label>Keterangan</label>
-                                    <textarea name="keterangan" class="form-control" placeholder="Cash / Transfer"></textarea>
+                                    <label>Metode Pembayaran</label>
+                                    <select name="keterangan" class="form-control" required>
+                                        <option value="">-- Pilih Metode Pembayaran --</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Transfer">Transfer</option>
+                                    </select>
                                 </div>
                             </div>
 

@@ -96,6 +96,7 @@ ORDER BY sk.tanggal DESC;
                                                         <th>Status</th>
                                                         <th>Harga per Pcs</th>
                                                         <th>Total</th>
+                                                        <th>Cetak Bukti Transaksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -122,18 +123,27 @@ ORDER BY sk.tanggal DESC;
                                                                 <td>Rp. <?= number_format($row['harga_konsinyasi'], 0, ',', '.') ?>
                                                                 </td>
                                                                 <td>Rp. <?= number_format($row['total'], 0, ',', '.') ?></td>
+                                                                <td>
+                                                                    <?php if ($row['status_pembayaran'] == 'Sudah Dibayar') { ?>
+                                                                        <a href="../pembayaran_supplier_admin/cetak_invoice.php?id_keluar=<?= $row['id_keluar'] ?>" target="_blank" class="btn btn-sm btn-primary">
+                                                                            <i class="fas fa-print"></i> Cetak Bukti Pembayaran
+                                                                        </a>
+                                                                    <?php } else { ?>
+                                                                        -
+                                                                    <?php } ?>
+                                                                </td>
                                                             </tr>
                                                             <?php
                                                         }
                                                     } else {
-                                                        echo "<tr><td colspan='8'>Tidak ada barang untuk supplier ini</td></tr>";
+                                                        echo "<tr><td colspan='9'>Tidak ada barang untuk supplier ini</td></tr>";
                                                     }
                                                     ?>
                                                 </tbody>
 
                                                 <tfoot>
                                                     <tr>
-                                                        <th colspan="7" class="text-right">Total Penjualan</th>
+                                                        <th colspan="8" class="text-right">Total Penjualan</th>
                                                         <th>Rp. <?= number_format($grand_total, 0, ',', '.') ?></th>
                                                     </tr>
                                                 </tfoot>

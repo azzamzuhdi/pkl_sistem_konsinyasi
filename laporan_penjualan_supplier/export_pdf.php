@@ -37,7 +37,7 @@ class PDF extends FPDF
     function Header()
     {
         // Logo (posisi x=10, y=6, ukuran lebar 25mm)
-        $this->Image('../logo_toko.png', 10, 8, 25); // ubah path logo sesuai lokasi kamu
+        $this->Image('../logo.png', 10, 8, 25); // ubah path logo sesuai lokasi kamu
 
         // Nama toko dan alamat
         $this->SetFont('Arial', 'B', 16);
