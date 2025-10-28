@@ -1,49 +1,6 @@
 <?php
 require_once '../db/conn.php';
 
-
-
-if (isset($_POST['tambah'])) {
-    $nama_supplier = $_POST['nama_supplier'];
-    $no_hp = $_POST['no_hp'];
-    $alamat = $_POST['alamat'];
-    $peran = '1';
-    $nama_user = $nama_supplier;
-    $password_supplier = sha1($nama_supplier);
-
-    $query_cek = mysqli_query($conn, "SELECT nama_supplier, no_hp FROM tb_supplier WHERE nama_supplier = '$nama_supplier' AND no_hp = '$no_hp'") or die(mysqli_error($conn));
-
-    $rv = mysqli_num_rows($query_cek);
-    if ($rv > 0) {
-        echo "<script>alert('Supplier sudah ada !!');window.location='index.php';</script>";
-    } else {
-        mysqli_query($conn, "INSERT INTO tb_supplier (nama_supplier, no_hp, alamat) VALUES ('$nama_supplier', '$no_hp', '$alamat')") or die(mysqli_error($conn));
-
-        $id_supplier = mysqli_insert_id($conn);
-
-        mysqli_query($conn, "INSERT INTO tb_user (username, password, peran, id_supplier, nama_user) VALUES ('$nama_supplier', '$password_supplier', '$peran', '$id_supplier', '$nama_user')") or die(mysqli_error($conn));
-        echo "<script>alert('Data supplier berhasil ditambahkan');window.location='index.php';</script>";
-    }
-}
-
-if (isset($_GET['id_supplier'])) {
-    $id_supplier = $_GET['id_supplier'];
-    mysqli_query($conn, "DELETE FROM tb_supplier WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
-    mysqli_query($conn, "DELETE FROM tb_user WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
-    echo "<script>alert('Data supplier berhasil dihapus');window.location='index.php';</script>";
-}
-
-if (isset($_POST['edit'])) {
-    $id_supplier = $_POST['id_supplier2'];
-    $nama_supplier = $_POST['nama_supplier2'];
-    $no_hp = $_POST['no_hp2'];
-    $alamat = $_POST['alamat2'];
-    mysqli_query($conn, "UPDATE tb_supplier SET nama_supplier = '$nama_supplier', no_hp = '$no_hp', alamat = '$alamat' WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
-    echo "<script>alert('Data supplier berhasil edit');window.location='index.php';</script>";
-}
-
-
-// barang
 if (isset($_POST['edit_barang'])) {
     $id_supplier = $_POST['id_supplier2'];
     $id_barang = $_POST['id_barang2'];

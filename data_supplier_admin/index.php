@@ -220,6 +220,30 @@ if ($_SESSION['peran'] != '0') {
             <?php
             include '../layout/script.php';
             ?>
+            <script>
+                // Auto-fill edit modal when Edit button is clicked
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Delegate click handler to document for dynamically added elements
+                    document.querySelectorAll('.open-modal-button').forEach(function (btn) {
+                        btn.addEventListener('click', function (e) {
+                            var id = btn.getAttribute('data-id_supplier') || '';
+                            var nama = btn.getAttribute('data-nama_supplier') || '';
+                            var nohp = btn.getAttribute('data-no_hp') || '';
+                            var alamat = btn.getAttribute('data-alamat') || '';
+
+                            var elId = document.getElementById('id_supplier2');
+                            var elNama = document.getElementById('nama_supplier2');
+                            var elNo = document.getElementById('no_hp2');
+                            var elAlamat = document.getElementById('alamat2');
+
+                            if (elId) elId.value = id;
+                            if (elNama) elNama.value = nama;
+                            if (elNo) elNo.value = nohp;
+                            if (elAlamat) elAlamat.value = alamat;
+                        });
+                    });
+                });
+            </script>
            
     </body>
 

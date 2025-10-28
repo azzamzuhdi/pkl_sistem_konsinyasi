@@ -175,6 +175,17 @@ if ($_SESSION['peran'] != '0') {
                     // Tampilkan modal
                     $('#modalHarga').modal('show');
                 }
+                
+                // Fungsi untuk menolak pengajuan dengan konfirmasi
+                function tolakPengajuan(id) {
+                    if (!id) return false;
+                    var confirmTolak = confirm('Apakah Anda yakin ingin menolak pengajuan ini?');
+                    if (confirmTolak) {
+                        // Redirect dengan parameter yang dibutuhkan oleh pengajuan_tanggapi.php
+                        window.location.href = 'pengajuan_tanggapi.php?id=' + encodeURIComponent(id) + '&aksi=tolak';
+                    }
+                    return false; // mencegah default anchor
+                }
             </script>
 
     </body>
