@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 19, 2025 at 03:57 AM
+-- Generation Time: Oct 28, 2025 at 04:29 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.28
 
@@ -43,7 +43,8 @@ CREATE TABLE `tb_barang` (
 --
 
 INSERT INTO `tb_barang` (`id_barang`, `id_supplier`, `kode_barang`, `nama_barang`, `harga_konsinyasi`, `harga_jual`, `stok_masuk`, `sisa_stok`) VALUES
-(28, 18, 'GF213', 'Magnum', 25000, 28000, 50, 19);
+(28, 18, 'GF213', 'Magnum kretek', 25000, 28000, 50, 19),
+(30, 18, 'GTY52', 'Popok', 12000, 15000, 14, 14);
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,10 @@ CREATE TABLE `tb_pengajuan_barang` (
 --
 
 INSERT INTO `tb_pengajuan_barang` (`id_pengajuan`, `id_supplier`, `kode_barang`, `nama_barang`, `harga_konsinyasi`, `harga_jual`, `stok_masuk`, `status_pengajuan`) VALUES
-(1, 18, 'GF213', 'Magnum', 25000, NULL, 40, 'Disetujui');
+(1, 18, 'GF213', 'Magnum', 25000, NULL, 40, 'Disetujui'),
+(2, 18, 'GF213', 'Popok', 12000, NULL, 23, 'Disetujui'),
+(3, 18, 'GTY52', 'Popok', 12000, NULL, 14, 'Disetujui'),
+(4, 18, 'GGT72', 'Jambu', 7000, NULL, 100, 'Ditolak');
 
 -- --------------------------------------------------------
 
@@ -184,16 +188,16 @@ CREATE TABLE `tb_supplier` (
   `id_supplier` int NOT NULL,
   `nama_supplier` varchar(255) NOT NULL,
   `no_hp` varchar(12) NOT NULL,
-  `alamat` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL
+  `alamat` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tb_supplier`
 --
 
-INSERT INTO `tb_supplier` (`id_supplier`, `nama_supplier`, `no_hp`, `alamat`, `email`) VALUES
-(18, 'Budi', '080981098390', 'bumiayu', 'azzamzuhdi82@gmail.com');
+INSERT INTO `tb_supplier` (`id_supplier`, `nama_supplier`, `no_hp`, `alamat`) VALUES
+(18, 'Budi', '080981098390', 'bumiayu'),
+(19, 'as', '082732500000', 'benda');
 
 -- --------------------------------------------------------
 
@@ -216,7 +220,8 @@ CREATE TABLE `tb_user` (
 
 INSERT INTO `tb_user` (`id_user`, `username`, `password`, `peran`, `id_supplier`, `nama_user`) VALUES
 (1, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 0, NULL, 'Admin'),
-(9, 'Budi', '6cc0f7b81d8dec3c2ee5ee3a0c70d01fa6fc0be7', 1, 18, 'Budi');
+(9, 'Budi', '6cc0f7b81d8dec3c2ee5ee3a0c70d01fa6fc0be7', 1, 18, 'Budi'),
+(10, 'Sa', '50cf95cee82204c65fd924e1ab51401c2eb0dea6', 1, 19, 'Sa');
 
 --
 -- Indexes for dumped tables
@@ -285,7 +290,7 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT for table `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `tb_pembayaran_supplier`
@@ -297,7 +302,7 @@ ALTER TABLE `tb_pembayaran_supplier`
 -- AUTO_INCREMENT for table `tb_pengajuan_barang`
 --
 ALTER TABLE `tb_pengajuan_barang`
-  MODIFY `id_pengajuan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pengajuan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tb_retur_barang`
@@ -321,13 +326,13 @@ ALTER TABLE `tb_stok_masuk`
 -- AUTO_INCREMENT for table `tb_supplier`
 --
 ALTER TABLE `tb_supplier`
-  MODIFY `id_supplier` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_supplier` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
