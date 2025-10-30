@@ -63,13 +63,34 @@ if (isset($_POST['tambah_barang'])) {
     $stok_masuk = $_POST['stok_masuk'];
     $id_supplier = $_POST['id_supplier'];
     $sisa_stok = $stok_masuk;
-
-    $query_cek = mysqli_query($conn, "SELECT kode_barang, id_supplier FROM tb_barang WHERE kode_barang='$kode_barang' AND id_supplier = '$id_supplier'") or die(mysqli_error($conn));
+    // Cek apakah barang dengan kode yang sama sudah ada untuk supplier ini
+    $query_cek = mysqli_query($conn, "SELECT * FROM tb_barang WHERE kode_barang='$kode_barang' AND id_supplier = '$id_supplier'") or die(mysqli_error($conn));
     $rv = mysqli_num_rows($query_cek);
     if ($rv > 0) {
-        echo "<script>alert('Barang sudah ada !!');window.location='barang.php?id_supplier=$id_supplier';</script>";
+        // Jika sudah ada, tambahkan stok dan update harga jika diperlukan
+        $existing = mysqli_fetch_assoc($query_cek);
+        $existing_stok_masuk = (int)$existing['stok_masuk'];
+        $existing_sisa = (int)$existing['sisa_stok'];
+
+        // Tambah stok masuk dan sisa stok
+        $new_stok_masuk = $existing_stok_masuk + (int)$stok_masuk;
+        $new_sisa = $existing_sisa + (int)$stok_masuk;
+        // Update record: hanya tambahkan stok (jangan ubah nama/harga)
+        $id_barang_existing = $existing['id_barang'];
+        mysqli_query($conn, "UPDATE tb_barang SET stok_masuk='$new_stok_masuk', sisa_stok='$new_sisa' WHERE id_barang = '$id_barang_existing'") or die(mysqli_error($conn));
+
+        // Catat di tabel tb_stok_masuk dengan tanggal sekarang
+        $tanggal = date("Y-m-d");
+        mysqli_query($conn, "INSERT INTO tb_stok_masuk (id_supplier, id_barang, jumlah_masuk, tanggal_masuk) VALUES ('$id_supplier', '$id_barang_existing', '$stok_masuk', '$tanggal')") or die(mysqli_error($conn));
+
+        echo "<script>alert('Barang sudah ada. Stok berhasil ditambahkan (+$stok_masuk).');window.location='barang.php?id_supplier=$id_supplier';</script>";
     } else {
         mysqli_query($conn, "INSERT INTO tb_barang (id_supplier, kode_barang, nama_barang, harga_konsinyasi, harga_jual, stok_masuk, sisa_stok) VALUES ('$id_supplier', '$kode_barang', '$nama_barang', '$harga_konsinyasi', '$harga_jual', '$stok_masuk', '$sisa_stok')") or die(mysqli_error($conn));
+        // dapatkan id_barang yang baru dibuat dan catat stok masuk
+        $new_id_barang = mysqli_insert_id($conn);
+        $tanggal = date("Y-m-d");
+        mysqli_query($conn, "INSERT INTO tb_stok_masuk (id_supplier, id_barang, jumlah_masuk, tanggal_masuk) VALUES ('$id_supplier', '$new_id_barang', '$stok_masuk', '$tanggal')") or die(mysqli_error($conn));
+
         echo "<script>alert('Data barang berhasil ditambahkan');window.location='barang.php?id_supplier=$id_supplier';</script>";
     }
 }

@@ -2,6 +2,9 @@
 require_once '../db/conn.php';
 $id_supplier = $_GET['id_supplier'];
 
+// Ambil daftar kode barang yang sudah ada (untuk dropdown)
+$existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, harga_konsinyasi, harga_jual, stok_masuk FROM tb_barang ORDER BY kode_barang ASC") or die(mysqli_error($conn));
+
 ?>
 
 <!DOCTYPE html>
@@ -149,10 +152,33 @@ $id_supplier = $_GET['id_supplier'];
                                 <input type="hidden" name="id_supplier" value="<?= $id_supplier ?>">
                                 <input type="hidden" name="id_barang" id="id_barang">
 
-                                <label for="kode_barang">Kode Barang</label>
-                                <input type="text" name="kode_barang" class="form-control" id="kode_barang"
-                                    maxlength="5" required>
-                            </div>
+                            
+                                <div class="form-group">
+                                    <label for="kode_select">Kode Barang</label>
+                                    <select id="kode_select" name="kode_barang" class="form-control">
+                                        <option value="">-- Pilih Kode atau Tambah Baru --</option>
+                                        <option value="__new__">+ Tambah kode baru</option>
+                                        <?php
+                                        // tampilkan daftar kode barang yang sudah ada
+                                        if (isset($existing_kode) && $existing_kode && mysqli_num_rows($existing_kode) > 0) {
+                                            // catatan: setiap opsi menyimpan nama pada data-nama untuk autofill
+                                            mysqli_data_seek($existing_kode, 0);
+                        while ($ek = mysqli_fetch_assoc($existing_kode)) {
+                            $kb = htmlspecialchars($ek['kode_barang']);
+                            $nb = htmlspecialchars($ek['nama_barang']);
+                            $hk = htmlspecialchars($ek['harga_konsinyasi']);
+                            $hj = htmlspecialchars($ek['harga_jual']);
+                            $sm = htmlspecialchars($ek['stok_masuk']);
+                            echo "<option value=\"$kb\" data-nama=\"$nb\" data-harga=\"$hk\" data-harga_jual=\"$hj\" data-stok=\"$sm\">$kb - $nb</option>";
+                        }
+                                        }
+                                        ?>
+                                    </select>
+
+                                    <!-- Input untuk kode baru, disembunyikan kecuali user memilih 'Tambah baru' -->
+                                    <input type="text" class="form-control mt-2" id="kode_barang" maxlength="5"
+                                        style="display:none;" placeholder="Masukkan kode baru">
+                                </div>
                             <div class="form-group">
                                 <label for="nama_barang"> Nama Barang:
                                 </label>
@@ -266,6 +292,56 @@ $id_supplier = $_GET['id_supplier'];
                 $('#modal-edit-barang').modal('show');
             });
 
+        </script>
+        <script>
+            // Toggle kode select / new-code input and autofill nama barang
+            $(function () {
+                // When selection changes
+                $('#kode_select').on('change', function () {
+                    var val = $(this).val();
+                    if (val === '__new__') {
+                        // user wants to add new kode -> show input, move name
+                        $('#kode_barang').show().attr('name', 'kode_barang');
+                        $('#kode_select').removeAttr('name');
+                        $('#nama_barang').val('');
+                        $('#nama_barang').prop('readonly', false);
+                        $('#kode_barang').focus();
+                    } else if (val === '') {
+                        // no selection
+                        $('#kode_barang').hide().removeAttr('name');
+                        $('#kode_select').attr('name', 'kode_barang');
+                        $('#nama_barang').val('');
+                        $('#nama_barang').prop('readonly', false);
+                        $('#harga_konsinyasi').val('');
+                        $('#harga_jual').val('');
+                        $('#stok_masuk').val('');
+                    } else {
+                        // existing code selected -> hide new-code input and autofill name
+                        var nama = $('#kode_select option:selected').data('nama') || '';
+                        var harga = $('#kode_select option:selected').data('harga') || '';
+                        var harga_jual = $('#kode_select option:selected').data('harga_jual') || '';
+                        var stok = $('#kode_select option:selected').data('stok') || '';
+                        $('#kode_barang').hide().removeAttr('name');
+                        $('#kode_select').attr('name', 'kode_barang');
+                        $('#nama_barang').val(nama);
+                        $('#nama_barang').prop('readonly', true);
+                        $('#harga_konsinyasi').val(harga);
+                        $('#harga_jual').val(harga_jual);
+                        $('#stok_masuk').val(stok);
+                    }
+                });
+
+                // When add modal is opened, reset fields
+                $('#modal-tambah-barang').on('show.bs.modal', function () {
+                    $('#kode_select').val('');
+                    $('#kode_select').attr('name', 'kode_barang');
+                    $('#kode_barang').hide().removeAttr('name').val('');
+                    $('#nama_barang').val('');
+                    $('#harga_konsinyasi').val('');
+                    $('#harga_jual').val('');
+                    $('#stok_masuk').val('');
+                });
+            });
         </script>
 </body>
 
