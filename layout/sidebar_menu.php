@@ -131,6 +131,14 @@ if ($_SESSION['peran'] == '0') { ?>
                 </a>
             </li>
             <li class="nav-item">
+                <a href="../laporan_stok_masuk_admin" class="nav-link 
+                <?php if ($halaman == 'laporan_stok_masuk_admin')
+                    echo 'active'; ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stok Masuk</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="../laporan_penjualan_admin" class="nav-link 
                 <?php if ($halaman == 'laporan_penjualan_admin')
                     echo 'active'; ?>">

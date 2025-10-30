@@ -14,6 +14,18 @@ $id_supplier = $_SESSION['id_supplier'];
 $query_supplier = mysqli_query($conn, "SELECT * FROM tb_supplier WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
 $row_supplier = mysqli_fetch_assoc($query_supplier);
 
+// date range support (optional)
+$date_from = isset($_GET['date_from']) ? mysqli_real_escape_string($conn, $_GET['date_from']) : '';
+$date_to = isset($_GET['date_to']) ? mysqli_real_escape_string($conn, $_GET['date_to']) : '';
+$where_date = '';
+if (!empty($date_from) && !empty($date_to)) {
+    $where_date = " AND r.tanggal_retur BETWEEN '$date_from 00:00:00' AND '$date_to 23:59:59'";
+} elseif (!empty($date_from)) {
+    $where_date = " AND r.tanggal_retur >= '$date_from 00:00:00'";
+} elseif (!empty($date_to)) {
+    $where_date = " AND r.tanggal_retur <= '$date_to 23:59:59'";
+}
+
 // Query data retur
 $query = mysqli_query($conn, "
     SELECT 
@@ -28,7 +40,7 @@ $query = mysqli_query($conn, "
     FROM tb_retur_barang r
     JOIN tb_barang b ON r.id_barang = b.id_barang
     WHERE r.id_supplier = '$id_supplier'
-    AND r.status_retur = 'Diterima'
+    AND r.status_retur = 'Diterima' $where_date
     ORDER BY r.tanggal_retur DESC
 ") or die(mysqli_error($conn));
 

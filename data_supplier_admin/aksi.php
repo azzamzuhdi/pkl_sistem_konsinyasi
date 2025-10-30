@@ -79,8 +79,8 @@ if (isset($_POST['tambah_barang'])) {
         $id_barang_existing = $existing['id_barang'];
         mysqli_query($conn, "UPDATE tb_barang SET stok_masuk='$new_stok_masuk', sisa_stok='$new_sisa' WHERE id_barang = '$id_barang_existing'") or die(mysqli_error($conn));
 
-        // Catat di tabel tb_stok_masuk dengan tanggal sekarang
-        $tanggal = date("Y-m-d");
+    // Catat di tabel tb_stok_masuk dengan tanggal sekarang (format DATE)
+    $tanggal = date("Y-m-d");
         mysqli_query($conn, "INSERT INTO tb_stok_masuk (id_supplier, id_barang, jumlah_masuk, tanggal_masuk) VALUES ('$id_supplier', '$id_barang_existing', '$stok_masuk', '$tanggal')") or die(mysqli_error($conn));
 
         echo "<script>alert('Barang sudah ada. Stok berhasil ditambahkan (+$stok_masuk).');window.location='barang.php?id_supplier=$id_supplier';</script>";
@@ -88,7 +88,7 @@ if (isset($_POST['tambah_barang'])) {
         mysqli_query($conn, "INSERT INTO tb_barang (id_supplier, kode_barang, nama_barang, harga_konsinyasi, harga_jual, stok_masuk, sisa_stok) VALUES ('$id_supplier', '$kode_barang', '$nama_barang', '$harga_konsinyasi', '$harga_jual', '$stok_masuk', '$sisa_stok')") or die(mysqli_error($conn));
         // dapatkan id_barang yang baru dibuat dan catat stok masuk
         $new_id_barang = mysqli_insert_id($conn);
-        $tanggal = date("Y-m-d");
+    $tanggal = date("Y-m-d");
         mysqli_query($conn, "INSERT INTO tb_stok_masuk (id_supplier, id_barang, jumlah_masuk, tanggal_masuk) VALUES ('$id_supplier', '$new_id_barang', '$stok_masuk', '$tanggal')") or die(mysqli_error($conn));
 
         echo "<script>alert('Data barang berhasil ditambahkan');window.location='barang.php?id_supplier=$id_supplier';</script>";

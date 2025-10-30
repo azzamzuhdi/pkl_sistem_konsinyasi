@@ -58,6 +58,17 @@ if ($_SESSION['peran'] != '1') {
                                     <!-- /.card-header -->
 
                                     <?php
+                                    $date_from = isset($_GET['date_from']) ? mysqli_real_escape_string($conn, $_GET['date_from']) : '';
+                                    $date_to = isset($_GET['date_to']) ? mysqli_real_escape_string($conn, $_GET['date_to']) : '';
+                                    $where_date = '';
+                                    if (!empty($date_from) && !empty($date_to)) {
+                                        $where_date = " AND sk.tanggal BETWEEN '$date_from 00:00:00' AND '$date_to 23:59:59'";
+                                    } elseif (!empty($date_from)) {
+                                        $where_date = " AND sk.tanggal >= '$date_from 00:00:00'";
+                                    } elseif (!empty($date_to)) {
+                                        $where_date = " AND sk.tanggal <= '$date_to 23:59:59'";
+                                    }
+
                                     $query_terjual = mysqli_query($conn, "
       SELECT 
     sk.id_keluar,
@@ -74,17 +85,26 @@ if ($_SESSION['peran'] != '1') {
 FROM tb_stok_keluar sk
 JOIN tb_barang b ON sk.id_barang = b.id_barang
 JOIN tb_supplier s ON b.id_supplier = s.id_supplier
-WHERE sk.jenis_keluar = 'Terjual' AND s.id_supplier = '$id_supplier'
+WHERE sk.jenis_keluar = 'Terjual' AND s.id_supplier = '$id_supplier' $where_date
 ORDER BY sk.tanggal DESC;
-    ");
+    ") or die(mysqli_error($conn));
                                     ?>
                                     <?php if ($id_supplier) { ?>
                                         <div class="card-body">
-                                            <p>
-                                                <a href="export_pdf.php" target="_blank" class="btn btn-primary">
-                                                    <i class="fas fa-file-pdf"></i> Export PDF
-                                                </a>
-                                            </p>
+                                            <form class="row g-3 mb-3" method="get">
+                                                <div class="col-auto">
+                                                    <input type="date" name="date_from" class="form-control" value="<?= htmlspecialchars($date_from) ?>">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input type="date" name="date_to" class="form-control" value="<?= htmlspecialchars($date_to) ?>">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                                    <a href="export_pdf.php?date_from=<?= $date_from ?>&date_to=<?= $date_to ?>" target="_blank" class="btn btn-danger">
+                                                        <i class="fas fa-file-pdf"></i> Export PDF
+                                                    </a>
+                                                </div>
+                                            </form>
                                             <table id="example1" class="table table-bordered table-striped text-center">
                                                 <thead>
                                                     <tr>

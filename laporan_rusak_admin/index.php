@@ -64,25 +64,30 @@ if ($_SESSION['peran'] != '0') {
                                                         <?php
                                                         $query_supplier = mysqli_query($conn, "SELECT * FROM tb_supplier") or die(mysqli_error($conn));
                                                         $id_supplier = isset($_GET['id_supplier']) ? mysqli_real_escape_string($conn, $_GET['id_supplier']) : '';
+                                                        $date_from = isset($_GET['date_from']) ? mysqli_real_escape_string($conn, $_GET['date_from']) : '';
+                                                        $date_to = isset($_GET['date_to']) ? mysqli_real_escape_string($conn, $_GET['date_to']) : '';
                                                         $barang = [];
                                                         if ($id_supplier) {
                                                             $barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
                                                         }
                                                         ?>
                                                         <label for="id_supplier">Pilih Supplier:</label>
-                                                        <select name="id_supplier" id="id_supplier" class="form-control"
-                                                            required>
+                                                        <select name="id_supplier" id="id_supplier" class="form-control" required>
                                                             <option value="">-- Pilih Supplier --</option>
                                                             <?php while ($row = mysqli_fetch_assoc($query_supplier)) { ?>
-                                                                <option value="<?= $row['id_supplier'] ?>"
-                                                                    <?= ($id_supplier == $row['id_supplier']) ? 'selected' : '' ?>>
+                                                                <option value="<?= $row['id_supplier'] ?>" <?= ($id_supplier == $row['id_supplier']) ? 'selected' : '' ?>>
                                                                     <?= $row['nama_supplier'] ?>
                                                                 </option>
                                                             <?php } ?>
                                                         </select>
-                                                        <button type="submit" class="btn btn-primary mt-2">Tampilkan
-                                                            Laporan
-                                                            Barang Rusak</button>
+                                                        <label for="date_from" class="mt-2">Dari tanggal (opsional):</label>
+                                                        <input type="date" id="date_from" name="date_from" class="form-control" value="<?= $date_from ?>">
+                                                        <label for="date_to" class="mt-2">Sampai tanggal (opsional):</label>
+                                                        <input type="date" id="date_to" name="date_to" class="form-control" value="<?= $date_to ?>">
+                                                        <button type="submit" class="btn btn-primary mt-2">Tampilkan Laporan Barang Rusak</button>
+                                                        <?php if ($id_supplier) { ?>
+                                                            <a href="export_pdf.php?id_supplier=<?= $id_supplier ?><?= $date_from ? '&date_from='.$date_from : '' ?><?= $date_to ? '&date_to='.$date_to : '' ?>" target="_blank" class="btn btn-danger mt-2 ml-2">Cetak PDF</a>
+                                                        <?php } ?>
                                                     </form>
                                                 </div>
                                             </div>
@@ -118,6 +123,15 @@ if ($_SESSION['peran'] != '0') {
                                         </div>
 
                                         <?php
+                                        $where_date = '';
+                                        if (!empty($date_from) && !empty($date_to)) {
+                                            $where_date = " AND sk.tanggal BETWEEN '$date_from 00:00:00' AND '$date_to 23:59:59'";
+                                        } elseif (!empty($date_from)) {
+                                            $where_date = " AND sk.tanggal >= '$date_from 00:00:00'";
+                                        } elseif (!empty($date_to)) {
+                                            $where_date = " AND sk.tanggal <= '$date_to 23:59:59'";
+                                        }
+
                                         $query_rusak = mysqli_query($conn, "
       SELECT 
     sk.id_keluar,
@@ -132,9 +146,9 @@ if ($_SESSION['peran'] != '0') {
 FROM tb_stok_keluar sk
 JOIN tb_barang b ON sk.id_barang = b.id_barang
 JOIN tb_supplier s ON b.id_supplier = s.id_supplier
-WHERE sk.jenis_keluar IN ('Rusak', 'Kadaluarsa') AND s.id_supplier = '$id_supplier'
+WHERE sk.jenis_keluar IN ('Rusak', 'Kadaluarsa') AND s.id_supplier = '$id_supplier' $where_date
 ORDER BY sk.tanggal DESC;
-    ");
+    ") or die(mysqli_error($conn));
                                         ?>
                                         <?php if ($id_supplier) { ?>
                                             <div class="card">
@@ -177,10 +191,10 @@ ORDER BY sk.tanggal DESC;
                                                             ?>
                                                         </tbody>
                                                         <tfoot></tfoot>
-                                                            <tr>
-                                                                <th colspan="6" class="text-right">Total Kerugian</th>
-                                                                <th>Rp. <?= number_format($grand_total, 0, ',', '.') ?></th>
-                                                            </tr>
+                                                        <tr>
+                                                            <th colspan="6" class="text-right">Total Kerugian</th>
+                                                            <th>Rp. <?= number_format($grand_total, 0, ',', '.') ?></th>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>
