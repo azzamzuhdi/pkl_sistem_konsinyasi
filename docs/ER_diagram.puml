@@ -1,0 +1,112 @@
+@startuml
+' ER diagram for sistem_konsinyasi (generated from sistem_konsinyasi.sql)
+' Render with PlantUML (https://plantuml.com/) or VSCode PlantUML extension
+
+hide circle
+skinparam linetype ortho
+
+entity "tb_supplier" as supplier {
+  * id_supplier : INT <<PK>>
+  --
+  nama_supplier : VARCHAR
+  no_hp : VARCHAR
+  alamat : VARCHAR
+}
+
+entity "tb_user" as user {
+  * id_user : INT <<PK>>
+  --
+  username : VARCHAR
+  password : VARCHAR
+  peran : INT
+  id_supplier : INT
+  nama_user : VARCHAR
+}
+
+entity "tb_barang" as barang {
+  * id_barang : INT <<PK>>
+  --
+  id_supplier : INT
+  kode_barang : VARCHAR <<UNIQUE>>
+  nama_barang : VARCHAR
+  harga_konsinyasi : INT
+  harga_jual : INT
+  stok_masuk : INT
+  sisa_stok : INT
+}
+
+entity "tb_stok_masuk" as stokmasuk {
+  * id_stok_masuk : INT <<PK>>
+  --
+  id_supplier : INT
+  id_barang : INT
+  jumlah_masuk : INT
+  tanggal_masuk : DATE
+}
+
+entity "tb_stok_keluar" as stokkels {
+  * id_keluar : INT <<PK>>
+  --
+  id_barang : INT
+  id_supplier : INT
+  jumlah : INT
+  jenis_keluar : ENUM
+  tanggal : DATETIME
+  keterangan : VARCHAR
+  status_pembayaran : ENUM
+  status_retur : ENUM
+}
+
+entity "tb_retur_barang" as retur {
+  * id_retur : INT <<PK>>
+  --
+  id_supplier : INT
+  id_barang : INT
+  jumlah_retur : INT
+  alasan : ENUM
+  tanggal_retur : DATETIME
+  status_retur : ENUM
+  keterangan : TEXT
+}
+
+entity "tb_pengajuan_barang" as pengajuan {
+  * id_pengajuan : INT <<PK>>
+  --
+  id_supplier : INT
+  kode_barang : VARCHAR
+  nama_barang : VARCHAR
+  harga_konsinyasi : INT
+  harga_jual : INT
+  stok_masuk : INT
+  status_pengajuan : ENUM
+}
+
+entity "tb_pembayaran_supplier" as pembayaran {
+  * id_pembayaran : INT <<PK>>
+  --
+  id_supplier : INT
+  id_keluar : INT
+  total_pembayaran : DECIMAL
+  tanggal_pembayaran : DATE
+  keterangan : TEXT
+  notifikasi_sent : TINYINT
+  invoice_number : VARCHAR
+}
+
+' Relationships (based on foreign keys present in SQL dump)
+supplier ||--o{ barang : "1..* supplies"
+supplier ||--o{ tb_pembayaran_supplier : "1..*"
+supplier ||--o{ pengajuan : "1..*"
+supplier ||--o{ stokmasuk : "1..*"
+
+barang ||--o{ stokkels : "1..*" : "id_barang"
+barang ||--o{ retur : "1..*" : "id_barang"
+barang ||--o{ stokmasuk : "1..*" : "id_barang"
+
+' Note: tb_stok_keluar has id_supplier column but only id_barang FK declared in SQL.
+' Also tb_retur_barang contains id_supplier/id_barang fields (logical relationships).
+
+' Optional relation: user -> supplier (some users linked to supplier)
+user }o--|| supplier : "0..1 belongs_to"
+
+@enduml

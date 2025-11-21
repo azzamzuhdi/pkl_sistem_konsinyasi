@@ -98,13 +98,15 @@ if (isset($_POST['tambah_barang'])) {
 if (isset($_GET['id_barang'])) {
     $id_barang = $_GET['id_barang'];
 
-    // cari id_supplier dari barang yang akan dihapus UNTUKK REDIRECT
-    $result = mysqli_query($conn, "SELECT id_supplier FROM tb_barang WHERE id_barang = '$id_barang'") or die(mysqli_error($conn));
+    // cari id_supplier untuk redirect
+    $result = mysqli_query($conn, "SELECT id_supplier FROM tb_barang WHERE id_barang = '$id_barang'");
     $row = mysqli_fetch_assoc($result);
     $id_supplier = $row['id_supplier'];
 
-    // hapus data
-    mysqli_query($conn, "DELETE FROM tb_barang WHERE id_barang = '$id_barang'") or die(mysqli_error($conn));
-    echo "<script>alert('Data barang berhasil dihapus');window.location='barang.php?id_supplier=$id_supplier';</script>";
+    // Soft delete (tidak menghapus histori stok)
+    mysqli_query($conn, "UPDATE tb_barang SET status='nonaktif' WHERE id_barang='$id_barang'") or die(mysqli_error($conn));
+
+    echo "<script>alert('Barang berhasil dihapus');window.location='barang.php?id_supplier=$id_supplier';</script>";
 }
+
 

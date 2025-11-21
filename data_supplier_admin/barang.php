@@ -75,7 +75,7 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $query_barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
+                                            $query_barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier' AND status = 'aktif'") or die(mysqli_error($conn));
                                             $no = 1;
                                             $rv = mysqli_num_rows($query_barang);
                                             if ($rv > 0) {
@@ -152,7 +152,7 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
                                 <input type="hidden" name="id_supplier" value="<?= $id_supplier ?>">
                                 <input type="hidden" name="id_barang" id="id_barang">
 
-                            
+
                                 <div class="form-group">
                                     <label for="kode_select">Kode Barang</label>
                                     <select id="kode_select" name="kode_barang" class="form-control">
@@ -163,14 +163,14 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
                                         if (isset($existing_kode) && $existing_kode && mysqli_num_rows($existing_kode) > 0) {
                                             // catatan: setiap opsi menyimpan nama pada data-nama untuk autofill
                                             mysqli_data_seek($existing_kode, 0);
-                        while ($ek = mysqli_fetch_assoc($existing_kode)) {
-                            $kb = htmlspecialchars($ek['kode_barang']);
-                            $nb = htmlspecialchars($ek['nama_barang']);
-                            $hk = htmlspecialchars($ek['harga_konsinyasi']);
-                            $hj = htmlspecialchars($ek['harga_jual']);
-                            $sm = htmlspecialchars($ek['stok_masuk']);
-                            echo "<option value=\"$kb\" data-nama=\"$nb\" data-harga=\"$hk\" data-harga_jual=\"$hj\" data-stok=\"$sm\">$kb - $nb</option>";
-                        }
+                                            while ($ek = mysqli_fetch_assoc($existing_kode)) {
+                                                $kb = htmlspecialchars($ek['kode_barang']);
+                                                $nb = htmlspecialchars($ek['nama_barang']);
+                                                $hk = htmlspecialchars($ek['harga_konsinyasi']);
+                                                $hj = htmlspecialchars($ek['harga_jual']);
+                                                $sm = htmlspecialchars($ek['stok_masuk']);
+                                                echo "<option value=\"$kb\" data-nama=\"$nb\" data-harga=\"$hk\" data-harga_jual=\"$hj\" data-stok=\"$sm\">$kb - $nb</option>";
+                                            }
                                         }
                                         ?>
                                     </select>
@@ -179,32 +179,34 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
                                     <input type="text" class="form-control mt-2" id="kode_barang" maxlength="5"
                                         style="display:none;" placeholder="Masukkan kode baru">
                                 </div>
-                            <div class="form-group">
-                                <label for="nama_barang"> Nama Barang:
-                                </label>
-                                <input type="text" name="nama_barang" class="form-control" id="nama_barang"
-                                    maxlength="100" required>
+                                <div class="form-group">
+                                    <label for="nama_barang"> Nama Barang:
+                                    </label>
+                                    <input type="text" name="nama_barang" class="form-control" id="nama_barang"
+                                        maxlength="100" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="harga_konsinyasi"> Harga Konsinyasi:
+                                    </label>
+                                    <input type="number" name="harga_konsinyasi" class="form-control"
+                                        id="harga_konsinyasi" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="harga_jual"> Harga Jual:
+                                    </label>
+                                    <input type="number" name="harga_jual" class="form-control" id="harga_jual"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="stok_masuk"> Stok Masuk:
+                                    </label>
+                                    <input type="number" name="stok_masuk" class="form-control" id="stok_masuk"
+                                        required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="harga_konsinyasi"> Harga Konsinyasi:
-                                </label>
-                                <input type="number" name="harga_konsinyasi" class="form-control" id="harga_konsinyasi"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="harga_jual"> Harga Jual:
-                                </label>
-                                <input type="number" name="harga_jual" class="form-control" id="harga_jual" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="stok_masuk"> Stok Masuk:
-                                </label>
-                                <input type="number" name="stok_masuk" class="form-control" id="stok_masuk" required>
-                            </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" name="tambah_barang" class="btn btn-primary">Simpan</button>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" name="tambah_barang" class="btn btn-primary">Simpan</button>
                         </form>
                     </div>
                 </div>
