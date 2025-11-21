@@ -93,13 +93,13 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
                                                             <button type="button"
                                                                 class="btn btn-success btn-md open-modal-button"
                                                                 data-toggle="modal" data-target="#modal-edit-barang"
-                                                                data-id_barang="<?= $row['id_barang'] ?>"
-                                                                data-kode_barang="<?= $row['kode_barang'] ?>"
-                                                                data-nama_barang="<?= $row['nama_barang'] ?>"
-                                                                data-harga_konsinyasi="<?= $row['harga_konsinyasi'] ?>"
-                                                                data-harga_jual="<?= $row['harga_jual'] ?>"
-                                                                data-id_supplier="<?= $row['id_supplier'] ?>">
-                                                                <i class="fas fa-pencil-alt"></i> Edit
+                                                                data-id-barang="<?= $row['id_barang'] ?>"
+                                                                data-kode-barang="<?= $row['kode_barang'] ?>"
+                                                                data-nama-barang="<?= $row['nama_barang'] ?>"
+                                                                data-harga-konsinyasi="<?= $row['harga_konsinyasi'] ?>"
+                                                                data-harga-jual="<?= $row['harga_jual'] ?>"
+                                                                data-id-supplier="<?= $row['id_supplier'] ?>">
+                                                                <i class=" fas fa-pencil-alt"></i> Edit
                                                             </button>
 
                                                             <a href="aksi.php?id_barang=<?= $row['id_barang'] ?>"
@@ -254,6 +254,7 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
                                 </label>
                                 <input type="number" name="harga_jual2" class="form-control" id="harga_jual2">
                             </div>
+
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -276,23 +277,28 @@ $existing_kode = mysqli_query($conn, "SELECT DISTINCT kode_barang, nama_barang, 
         include '../layout/script.php';
         ?>
         <script type="text/javascript">
-            $(document).on('click', '.open-modal-button', function () {
-                var id_barang = $(this).data('id_barang');
-                var kode_barang = $(this).data('kode_barang');
-                var nama_barang = $(this).data('nama_barang');
-                var harga_konsinyasi = $(this).data('harga_konsinyasi');
-                var harga_jual = $(this).data('harga_jual');
-                var stok_masuk = $(this).data('stok_masuk');
-                var id_supplier = $(this).data('id_supplier');
-                $('#id_barang2').val(id_barang);
-                $('#kode_barang2').val(kode_barang);
-                $('#nama_barang2').val(nama_barang);
-                $('#harga_konsinyasi2').val(harga_konsinyasi);
-                $('#harga_jual2').val(harga_jual);
-                $('#stok_masuk2').val(stok_masuk);
-                $('#id_supplier2').val(id_supplier);
-                $('#modal-edit-barang').modal('show');
+            $(document).ready(function () {
+                $(document).on('click', '.open-modal-button', function () {
+
+                    $('#modal-edit-barang').modal('show');
+
+                    var id_barang = $(this).data('id-barang');
+                    var kode_barang = $(this).data('kode-barang');
+                    var nama_barang = $(this).data('nama-barang');
+                    var harga_konsinyasi = $(this).data('harga-konsinyasi');
+                    var harga_jual = $(this).data('harga-jual');
+                    var id_supplier = $(this).data('id-supplier');
+
+
+                    $('#id_barang2').val(id_barang);
+                    $('#kode_barang2').val(kode_barang);
+                    $('#nama_barang2').val(nama_barang);
+                    $('#harga_konsinyasi2').val(harga_konsinyasi);
+                    $('#harga_jual2').val(harga_jual);
+                    $('#id_supplier2').val(id_supplier);
+                });
             });
+
 
         </script>
         <script>

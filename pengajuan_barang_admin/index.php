@@ -15,7 +15,7 @@ if ($_SESSION['peran'] != '0') {
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Pengajuan  Barang | Sistem Konsinyasi</title>
+        <title>Pengajuan Barang | Sistem Konsinyasi</title>
 
         <?php
         include '../layout/style.php';
@@ -126,6 +126,11 @@ if ($_SESSION['peran'] != '0') {
                                                         <input type="text" id="nama_barang" class="form-control" readonly>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label>Kode Barang</label>
+                                                        <input type="text" id="kode_barang" name="kode_barang"
+                                                            class="form-control" maxlength="5" style="text-transform: uppercase;" required>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label>Harga Jual</label>
                                                         <input type="number" name="harga_jual" id="harga_jual"
                                                             class="form-control" required>
@@ -169,13 +174,14 @@ if ($_SESSION['peran'] != '0') {
                 function bukaModalHarga(id, namaBarang) {
                     // Isi data ke form
                     document.getElementById('id_pengajuan').value = id;
+                    document.getElementById('kode_barang').value = '';
                     document.getElementById('nama_barang').value = namaBarang;
                     document.getElementById('harga_jual').value = '';
 
                     // Tampilkan modal
                     $('#modalHarga').modal('show');
                 }
-                
+
                 // Fungsi untuk menolak pengajuan dengan konfirmasi
                 function tolakPengajuan(id) {
                     if (!id) return false;
