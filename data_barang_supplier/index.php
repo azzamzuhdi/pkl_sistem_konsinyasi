@@ -158,9 +158,6 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                 <input type="hidden" name="id_supplier" value="<?= $id_supplier ?>">
                                 <input type="hidden" name="id_barang" id="id_barang">
 
-                                <label for="kode_barang">Kode Barang</label>
-                                <input type="text" name="kode_barang" class="form-control" id="kode_barang"
-                                    maxlength="5" required>
                             </div>
                             <div class="form-group">
                                 <label for="nama_barang"> Nama Barang:
@@ -214,10 +211,6 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                             <div class="form-group">
                                 <input type="hidden" name="id_supplier2" id="id_supplier2">
                                 <input type="hidden" name="id_barang2" id="id_barang2">
-                                <label for="kode_barang"> Kode Barang:
-                                </label>
-                                <input type="text" name="kode_barang2" class="form-control" id="kode_barang2"
-                                    maxlength="5" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="nama_barang"> Nama Barang:
@@ -260,14 +253,12 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
         <script type="text/javascript">
             $(document).on('click', '.open-modal-button', function () {
                 var id_barang = $(this).data('id_barang');
-                var kode_barang = $(this).data('kode_barang');
                 var nama_barang = $(this).data('nama_barang');
                 var harga_konsinyasi = $(this).data('harga_konsinyasi');
                 var harga_jual = $(this).data('harga_jual');
                 var stok_masuk = $(this).data('stok_masuk');
                 var id_supplier = $(this).data('id_supplier');
                 $('#id_barang2').val(id_barang);
-                $('#kode_barang2').val(kode_barang);
                 $('#nama_barang2').val(nama_barang);
                 $('#harga_konsinyasi2').val(harga_konsinyasi);
                 $('#harga_jual2').val(harga_jual);

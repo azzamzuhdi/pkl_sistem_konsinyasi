@@ -47,7 +47,6 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                 <thead>
                                     <tr>
                                         <th style="width:5%">No</th>
-                                        <th>Kode Barang</th>
                                         <th>Nama Barang</th>
                                         <th>Harga Konsinyasi</th>
                                         <th>Stok Masuk</th>
@@ -61,7 +60,6 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                         while ($row = mysqli_fetch_assoc($query)) {
                                             echo "<tr>
                                             <td>{$no}</td>
-                                            <td>{$row['kode_barang']}</td>
                                             <td>{$row['nama_barang']}</td>
                                             <td>Rp " . number_format($row['harga_konsinyasi'], 0, ',', '.') . "</td>
                                             <td>{$row['stok_masuk']}</td>

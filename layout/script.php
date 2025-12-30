@@ -39,6 +39,7 @@
 </script>
 
 <!-- modals -->
+ 
  <!-- jQuery -->
 <!-- SweetAlert2 -->
 <script src="../adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
