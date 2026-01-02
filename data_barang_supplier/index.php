@@ -75,7 +75,7 @@ $query = mysqli_query($conn, "SELECT * FROM tb_pengajuan_barang WHERE id_supplie
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $query_barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
+                                            $query_barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier' AND status = 'aktif'") or die(mysqli_error($conn));
                                             $no = 1;
                                             $rv = mysqli_num_rows($query_barang);
                                             if ($rv > 0) {

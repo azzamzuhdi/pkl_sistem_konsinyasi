@@ -65,7 +65,7 @@ if ($_SESSION['peran'] != '0') {
                                                         $id_supplier = isset($_GET['id_supplier']) ? mysqli_real_escape_string($conn, $_GET['id_supplier']) : '';
                                                         $barang = [];
                                                         if ($id_supplier) {
-                                                            $barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier'") or die(mysqli_error($conn));
+                                                            $barang = mysqli_query($conn, "SELECT * FROM tb_barang WHERE id_supplier = '$id_supplier' AND status = 'aktif'") or die(mysqli_error($conn));
                                                         }
                                                         ?>
                                                         <label for="id_supplier">Pilih Supplier:</label>

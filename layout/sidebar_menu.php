@@ -77,6 +77,13 @@ if ($_SESSION['peran'] == '0') { ?>
             <i class="nav-icon fas fa-undo"></i>
             <p>
                 Retur Barang
+                <?php
+                $query_count_retur = mysqli_query($conn, "SELECT COUNT(*) AS jumlah FROM tb_retur_barang WHERE status_retur='Menunggu'");
+                $data_count_retur = mysqli_fetch_assoc($query_count_retur);
+                if ($data_count_retur['jumlah'] > 0) {
+                    echo '<span class="badge badge-danger">' . $data_count_retur['jumlah'] . '</span>';
+                }
+                ?>
             </p>
         </a>
     </li>
