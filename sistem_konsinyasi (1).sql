@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2025 at 04:29 AM
+-- Generation Time: Jan 02, 2026 at 12:23 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.28
 
@@ -35,16 +35,27 @@ CREATE TABLE `tb_barang` (
   `harga_konsinyasi` int NOT NULL,
   `harga_jual` int DEFAULT NULL,
   `stok_masuk` int NOT NULL,
-  `sisa_stok` int NOT NULL
+  `sisa_stok` int NOT NULL,
+  `status` enum('aktif','nonaktif') DEFAULT 'aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tb_barang`
 --
 
-INSERT INTO `tb_barang` (`id_barang`, `id_supplier`, `kode_barang`, `nama_barang`, `harga_konsinyasi`, `harga_jual`, `stok_masuk`, `sisa_stok`) VALUES
-(28, 18, 'GF213', 'Magnum kretek', 25000, 28000, 50, 19),
-(30, 18, 'GTY52', 'Popok', 12000, 15000, 14, 14);
+INSERT INTO `tb_barang` (`id_barang`, `id_supplier`, `kode_barang`, `nama_barang`, `harga_konsinyasi`, `harga_jual`, `stok_masuk`, `sisa_stok`, `status`) VALUES
+(28, 18, 'GF213', 'Magnum kretek', 25000, 28000, 132, 32, 'aktif'),
+(30, 18, 'GTY52', 'Popok', 12000, 15000, 32, 25, 'aktif'),
+(31, 18, 'HHY67', 'Nabati', 2000, 2500, 37, 37, 'aktif'),
+(32, 18, 'GHHA', 'Oreo', 1000, 2000, 25, 25, 'nonaktif'),
+(33, 20, 'HKK01', 'Susu Ultramilk', 2000, 3000, 100, 78, 'nonaktif'),
+(34, 20, 'KKA2', 'Aqua', 4500, 5000, 30, 30, 'aktif'),
+(35, 20, 'FFH', 'Aqua', 4500, 5000, 30, 30, 'aktif'),
+(36, 20, 'GTR5', 'Vit', 4000, 6000, 100, -20, 'nonaktif'),
+(37, 20, 'UI768', 'Tuton beras', 10000, 12000, 10, 10, 'nonaktif'),
+(38, 18, 'GF210', 'Nabati', 2000, 3000, 34, 34, 'nonaktif'),
+(39, 18, 'dE432', 'Good day', 3000, 4000, 12, 12, 'aktif'),
+(40, 18, 'HUO78', 'Class mild', 25000, 26000, 40, 40, 'aktif');
 
 -- --------------------------------------------------------
 
@@ -72,7 +83,10 @@ INSERT INTO `tb_pembayaran_supplier` (`id_pembayaran`, `id_supplier`, `id_keluar
 (2, 18, 4, '75000.00', '2025-10-17', 'cash', 0, ''),
 (3, 18, 5, '100000.00', '2025-10-17', 'cash', 1, 'INV-20251017-0003'),
 (4, 18, 6, '25000.00', '2025-10-18', 'transfer\r\n', 0, 'INV-20251018-0002'),
-(5, 18, 7, '25000.00', '2025-10-18', 'Transfer', 0, 'INV-20251018-0003');
+(5, 18, 7, '25000.00', '2025-10-18', 'Transfer', 0, 'INV-20251018-0003'),
+(6, 18, 8, '1250000.00', '2025-11-07', 'Cash', 0, 'INV-20251107-0002'),
+(7, 20, 11, '320000.00', '2025-11-08', 'Transfer', 0, 'INV-20251108-0002'),
+(8, 20, 14, '4000.00', '2025-12-30', 'Cash', 0, 'INV-20251230-0002');
 
 -- --------------------------------------------------------
 
@@ -83,7 +97,7 @@ INSERT INTO `tb_pembayaran_supplier` (`id_pembayaran`, `id_supplier`, `id_keluar
 CREATE TABLE `tb_pengajuan_barang` (
   `id_pengajuan` int NOT NULL,
   `id_supplier` int NOT NULL,
-  `kode_barang` varchar(10) NOT NULL,
+  `kode_barang` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `nama_barang` varchar(100) NOT NULL,
   `harga_konsinyasi` int NOT NULL,
   `harga_jual` int DEFAULT NULL,
@@ -96,10 +110,7 @@ CREATE TABLE `tb_pengajuan_barang` (
 --
 
 INSERT INTO `tb_pengajuan_barang` (`id_pengajuan`, `id_supplier`, `kode_barang`, `nama_barang`, `harga_konsinyasi`, `harga_jual`, `stok_masuk`, `status_pengajuan`) VALUES
-(1, 18, 'GF213', 'Magnum', 25000, NULL, 40, 'Disetujui'),
-(2, 18, 'GF213', 'Popok', 12000, NULL, 23, 'Disetujui'),
-(3, 18, 'GTY52', 'Popok', 12000, NULL, 14, 'Disetujui'),
-(4, 18, 'GGT72', 'Jambu', 7000, NULL, 100, 'Ditolak');
+(13, 20, NULL, 'Pepsodent', 1400, NULL, 20, 'Menunggu');
 
 -- --------------------------------------------------------
 
@@ -124,7 +135,11 @@ CREATE TABLE `tb_retur_barang` (
 
 INSERT INTO `tb_retur_barang` (`id_retur`, `id_supplier`, `id_barang`, `jumlah_retur`, `alasan`, `tanggal_retur`, `status_retur`, `keterangan`) VALUES
 (1, 18, 28, 5, 'Rusak', '2025-10-16 16:40:37', 'Diterima', ''),
-(2, 18, 28, 2, 'Rusak', '2025-10-16 16:54:34', 'Diterima', '');
+(2, 18, 28, 2, 'Rusak', '2025-10-16 16:54:34', 'Diterima', ''),
+(3, 18, 28, 9, 'Rusak', '2025-11-03 10:22:50', 'Diterima', 'acc'),
+(4, 20, 36, 20, 'Rusak', '2025-11-03 10:40:00', 'Diterima', 'bocor'),
+(5, 18, 30, 5, 'Rusak', '2025-12-30 20:02:17', 'Ditolak', ''),
+(6, 20, 33, 20, 'Rusak', '2025-12-30 20:14:55', 'Menunggu', '');
 
 -- --------------------------------------------------------
 
@@ -155,7 +170,14 @@ INSERT INTO `tb_stok_keluar` (`id_keluar`, `id_barang`, `id_supplier`, `jumlah`,
 (4, 28, 18, 3, 'Terjual', '2025-10-17 21:12:54', 'd', 'Sudah Dibayar', 'Belum'),
 (5, 28, 18, 4, 'Terjual', '2025-10-17 21:45:57', 'sa', 'Sudah Dibayar', 'Belum'),
 (6, 28, 18, 1, 'Terjual', '2025-10-18 20:13:02', 'ya', 'Sudah Dibayar', 'Belum'),
-(7, 28, 18, 1, 'Terjual', '2025-10-18 20:37:45', 'd', 'Sudah Dibayar', 'Belum');
+(7, 28, 18, 1, 'Terjual', '2025-10-18 20:37:45', 'd', 'Sudah Dibayar', 'Belum'),
+(8, 28, 18, 50, 'Terjual', '2025-11-03 10:13:29', 'terjual', 'Sudah Dibayar', 'Belum'),
+(9, 30, 18, 5, 'Rusak', '2025-11-03 10:17:26', 'barang sudah terbuka', 'Tidak Terjual', 'Sudah'),
+(10, 28, 18, 9, 'Kadaluarsa', '2025-11-03 10:22:30', 'tidak layak pake', 'Tidak Terjual', 'Sudah'),
+(11, 36, 20, 80, 'Terjual', '2025-11-03 10:36:46', 'terjual', 'Sudah Dibayar', 'Belum'),
+(12, 36, 20, 20, 'Rusak', '2025-11-03 10:37:20', 'bocor', 'Tidak Terjual', 'Sudah'),
+(13, 33, 20, 20, 'Rusak', '2025-12-30 20:14:18', 'rusak', 'Tidak Terjual', 'Sudah'),
+(14, 33, 20, 2, 'Terjual', '2025-12-30 20:16:44', 'ok', 'Sudah Dibayar', 'Belum');
 
 -- --------------------------------------------------------
 
@@ -176,7 +198,22 @@ CREATE TABLE `tb_stok_masuk` (
 --
 
 INSERT INTO `tb_stok_masuk` (`id_stok_masuk`, `id_supplier`, `id_barang`, `jumlah_masuk`, `tanggal_masuk`) VALUES
-(1, 18, 28, 5, '2025-10-16');
+(1, 18, 28, 5, '2025-10-16'),
+(2, 18, 28, 50, '2025-10-30'),
+(3, 18, 30, 14, '2025-10-30'),
+(4, 18, 31, 17, '2025-10-30'),
+(5, 18, 31, 20, '2025-10-30'),
+(6, 18, 28, 20, '2025-11-03'),
+(7, 18, 28, 10, '2025-11-03'),
+(8, 18, 32, 25, '2025-11-03'),
+(9, 20, 33, 100, '2025-11-03'),
+(10, 20, 34, 30, '2025-11-03'),
+(11, 20, 37, 10, '2025-11-21'),
+(12, 18, 38, 34, '2025-11-21'),
+(13, 18, 39, 12, '2025-11-21'),
+(14, 18, 40, 40, '2025-12-30'),
+(15, 18, 28, 1, '2026-01-02'),
+(16, 18, 30, 2, '2026-01-02');
 
 -- --------------------------------------------------------
 
@@ -197,7 +234,8 @@ CREATE TABLE `tb_supplier` (
 
 INSERT INTO `tb_supplier` (`id_supplier`, `nama_supplier`, `no_hp`, `alamat`) VALUES
 (18, 'Budi', '080981098390', 'bumiayu'),
-(19, 'as', '082732500000', 'benda');
+(19, 'as', '082732500000', 'benda'),
+(20, 'Wildan', '089999966666', 'Legok');
 
 -- --------------------------------------------------------
 
@@ -221,7 +259,8 @@ CREATE TABLE `tb_user` (
 INSERT INTO `tb_user` (`id_user`, `username`, `password`, `peran`, `id_supplier`, `nama_user`) VALUES
 (1, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 0, NULL, 'Admin'),
 (9, 'Budi', '6cc0f7b81d8dec3c2ee5ee3a0c70d01fa6fc0be7', 1, 18, 'Budi'),
-(10, 'Sa', '50cf95cee82204c65fd924e1ab51401c2eb0dea6', 1, 19, 'Sa');
+(10, 'Sa', '50cf95cee82204c65fd924e1ab51401c2eb0dea6', 1, 19, 'Sa'),
+(11, 'Wildan', '0217ec6597b6b55a628642fbf9c3dd332f7bab99', 1, 20, 'Wildan');
 
 --
 -- Indexes for dumped tables
@@ -290,49 +329,49 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT for table `tb_barang`
 --
 ALTER TABLE `tb_barang`
-  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `tb_pembayaran_supplier`
 --
 ALTER TABLE `tb_pembayaran_supplier`
-  MODIFY `id_pembayaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_pembayaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tb_pengajuan_barang`
 --
 ALTER TABLE `tb_pengajuan_barang`
-  MODIFY `id_pengajuan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_pengajuan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tb_retur_barang`
 --
 ALTER TABLE `tb_retur_barang`
-  MODIFY `id_retur` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_retur` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_stok_keluar`
 --
 ALTER TABLE `tb_stok_keluar`
-  MODIFY `id_keluar` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_keluar` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tb_stok_masuk`
 --
 ALTER TABLE `tb_stok_masuk`
-  MODIFY `id_stok_masuk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_stok_masuk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tb_supplier`
 --
 ALTER TABLE `tb_supplier`
-  MODIFY `id_supplier` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_supplier` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
